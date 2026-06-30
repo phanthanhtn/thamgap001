@@ -205,7 +205,7 @@
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
             <input type="text" id="prisoner-search-input" oninput="filterPrisonerList()" placeholder="Tìm theo Tên hoặc Ngày sinh..." class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
           </div>
-          <button onclick="renderPrisonerList(dbPrisoners)" class="p-2.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-xl text-slate-600 transition-colors flex items-center justify-center cursor-pointer" title="Làm mới">
+          <button onclick="reloadPrisonersFromSheet()" class="p-2.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-xl text-slate-600 transition-colors flex items-center justify-center cursor-pointer" title="Làm mới từ Google Sheets">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
           </button>
         </div>
@@ -330,7 +330,7 @@
               <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
               <input type="text" id="queue-search-input" oninput="filterVisits()" placeholder="Tìm tên thân nhân, CCCD hoặc can phạm..." class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-xs font-medium focus:outline-none focus:ring-1 focus:ring-indigo-600">
             </div>
-            <button onclick="renderAdminVisits(dbVisits)" class="p-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-600 cursor-pointer" title="Làm mới">
+            <button onclick="reloadAdminVisitsFromSheet()" class="p-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-600 cursor-pointer" title="Làm mới từ Google Sheets">
               <i data-lucide="refresh-cw" class="w-4 h-4"></i>
             </button>
           </div>
@@ -370,10 +370,7 @@
               <i data-lucide="save" class="w-4 h-4"></i> Lưu Cấu Hình
             </button>
           </form>
-          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-800 space-y-1">
-            <p class="font-bold flex items-center gap-1"><i data-lucide="info" class="w-3.5 h-3.5"></i> Lưu ý về lưu trữ dữ liệu</p>
-            <p>Dữ liệu được lưu cục bộ trên thiết bị (LocalStorage). Mỗi thiết bị quản lý độc lập. Để đồng bộ nhiều thiết bị, cần tích hợp máy chủ riêng.</p>
-          </div>
+          <div id="sheet-status-box" class="rounded-2xl p-4 text-xs space-y-1 border"></div>
         </div>
       </div>
 
@@ -463,6 +460,11 @@
     // ============================================================
     // SEED DATA (chỉ dùng khi localStorage chưa có dữ liệu)
     // ============================================================
+    // ============================================================
+    // CẤU HÌNH GOOGLE SHEETS — Dán URL Web App Apps Script vào đây
+    // ============================================================
+    var SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzb7zyTWsZnSvJamNRPMoSAeJ6PUOyzy8dXbw5Y64AlEWTqnLb1ct8bX7M8W1vo6257Qg/exec"; // VD: https://script.google.com/macros/s/AKfycb.../exec
+
     var SEED_PRISONERS = [
       { id: "p1", name: "NGUYEN VAN HAI", dob: "12-05-1994", address: "Hoa Thanh, Tay Ninh", status: "active", reason: "" },
       { id: "p2", name: "TRAN MINH TAM", dob: "25-08-1990", address: "Chau Thanh, Tay Ninh", status: "active", reason: "" },
@@ -495,6 +497,59 @@
     function saveSettings()  { localStorage.setItem('tg1_settings',  JSON.stringify(dbSettings));  }
     function savePrisoners() { localStorage.setItem('tg1_prisoners', JSON.stringify(dbPrisoners)); }
     function saveVisits()    { localStorage.setItem('tg1_visits',    JSON.stringify(dbVisits));    }
+
+    function isSheetConfigured() {
+      return SHEET_API_URL && SHEET_API_URL.indexOf('script.google.com') !== -1;
+    }
+
+    function renderSheetStatus() {
+      var box = document.getElementById('sheet-status-box');
+      if (!box) return;
+      if (isSheetConfigured()) {
+        box.className = 'rounded-2xl p-4 text-xs space-y-1 border bg-emerald-50 border-emerald-200 text-emerald-800';
+        box.innerHTML = '<p class="font-bold flex items-center gap-1"><i data-lucide="cloud" class="w-3.5 h-3.5"></i> Đã kết nối Google Sheets</p><p>Mọi lượt đăng ký và thay đổi can phạm nhân sẽ tự động đồng bộ lên Google Sheets. LocalStorage chỉ dùng làm bộ nhớ đệm dự phòng khi mất mạng.</p>';
+      } else {
+        box.className = 'rounded-2xl p-4 text-xs space-y-1 border bg-amber-50 border-amber-200 text-amber-800';
+        box.innerHTML = '<p class="font-bold flex items-center gap-1"><i data-lucide="info" class="w-3.5 h-3.5"></i> Chưa kết nối Google Sheets</p><p>Hệ thống đang chạy ở chế độ ngoại tuyến (LocalStorage). Để đồng bộ, dán URL Web App Apps Script vào biến SHEET_API_URL trong mã nguồn.</p>';
+      }
+      lucide.createIcons();
+    }
+
+    // Đọc danh sách can phạm từ Google Sheets, fallback về LocalStorage nếu lỗi mạng
+    function syncPrisonersFromSheet() {
+      if (!isSheetConfigured()) return Promise.resolve(dbPrisoners);
+      return fetch(SHEET_API_URL + '?action=getPrisoners')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.result === 'success') {
+            dbPrisoners = data.data;
+            savePrisoners();
+          }
+          return dbPrisoners;
+        })
+        .catch(function(err) {
+          console.warn('Không tải được can phạm từ Sheets, dùng dữ liệu cục bộ.', err);
+          return dbPrisoners;
+        });
+    }
+
+    // Đọc danh sách lượt đăng ký từ Google Sheets, fallback về LocalStorage nếu lỗi mạng
+    function syncVisitsFromSheet() {
+      if (!isSheetConfigured()) return Promise.resolve(dbVisits);
+      return fetch(SHEET_API_URL + '?action=getVisits')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.result === 'success') {
+            dbVisits = data.data;
+            saveVisits();
+          }
+          return dbVisits;
+        })
+        .catch(function(err) {
+          console.warn('Không tải được lượt đăng ký từ Sheets, dùng dữ liệu cục bộ.', err);
+          return dbVisits;
+        });
+    }
 
     function initDatabase() {
       // Settings
@@ -659,7 +714,7 @@
     // ============================================================
     // REGISTRATION
     // ============================================================
-    function handleRegistrationSubmit(event) {
+    async function handleRegistrationSubmit(event) {
       event.preventDefault();
       clearNotification();
 
@@ -699,6 +754,10 @@
       showLoading('Đang đối soát và cấp số thứ tự...', true);
 
       try {
+        // Đồng bộ dữ liệu mới nhất từ Google Sheets trước khi đối soát (tránh trùng STT/CCCD khi nhiều người cùng đăng ký)
+        await syncPrisonersFromSheet();
+        await syncVisitsFromSheet();
+
         var todayDate = dbSettings.visitDate;
 
         // Kiểm tra kỷ luật
@@ -760,6 +819,32 @@
 
         dbVisits.push(newVisit);
         saveVisits();
+
+        // Gửi lên Google Sheets — server sẽ cấp lại STT chính thức nếu cần (chống trùng khi nhiều người đăng ký cùng lúc)
+        if (isSheetConfigured()) {
+          try {
+            var res = await fetch(SHEET_API_URL, {
+              method: 'POST',
+              body: JSON.stringify({ action: 'addVisit', visit: newVisit })
+            });
+            var resultData = await res.json();
+            if (resultData.result !== 'success') {
+              // Server từ chối (VD: phát hiện trùng dữ liệu mà máy cục bộ chưa biết) -> hủy hồ sơ vừa thêm cục bộ
+              dbVisits = dbVisits.filter(function(v) { return v.id !== newVisit.id; });
+              saveVisits();
+              showNotification(resultData.message || 'Máy chủ từ chối lượt đăng ký này!', 'error');
+              showLoading('', false);
+              return;
+            }
+            if (resultData.stt) {
+              newVisit.stt = String(resultData.stt).padStart(3, '0');
+              saveVisits();
+            }
+          } catch (netErr) {
+            console.warn('Không thể đồng bộ lên Google Sheets, đã lưu cục bộ tạm thời.', netErr);
+            showNotification('Cảnh báo: Không kết nối được máy chủ Google Sheets. Đã lưu tạm trên thiết bị, vui lòng đồng bộ lại sau.', 'warning');
+          }
+        }
 
         currentVisit = newVisit;
         showTicket(newVisit);
@@ -1019,27 +1104,58 @@
       }));
     }
 
-    function checkInVisit(id) {
+    function reloadPrisonersFromSheet() {
+      showLoading('Đang tải danh sách can phạm từ Google Sheets...', true);
+      syncPrisonersFromSheet().then(function() {
+        renderPrisonerList(dbPrisoners);
+        showLoading('', false);
+      });
+    }
+
+    function reloadAdminVisitsFromSheet() {
+      showLoading('Đang tải hồ sơ đăng ký từ Google Sheets...', true);
+      syncVisitsFromSheet().then(function() {
+        renderAdminVisits(dbVisits);
+        showLoading('', false);
+      });
+    }
+
+    async function checkInVisit(id) {
       var v = dbVisits.filter(function(x) { return x.id === id; })[0];
       if (!v) return;
       v.status = 'checked_in';
       saveVisits();
       renderAdminVisits(dbVisits);
+      if (isSheetConfigured()) {
+        try {
+          await fetch(SHEET_API_URL, { method: 'POST', body: JSON.stringify({ action: 'checkIn', id: id }) });
+        } catch (err) { console.warn('Lỗi đồng bộ checkIn lên Sheets.', err); }
+      }
     }
 
-    function cancelVisit(id) {
+    async function cancelVisit(id) {
       var v = dbVisits.filter(function(x) { return x.id === id; })[0];
       if (!v) return;
       v.status = 'cancelled';
       saveVisits();
       renderAdminVisits(dbVisits);
+      if (isSheetConfigured()) {
+        try {
+          await fetch(SHEET_API_URL, { method: 'POST', body: JSON.stringify({ action: 'cancelVisit', id: id }) });
+        } catch (err) { console.warn('Lỗi đồng bộ cancelVisit lên Sheets.', err); }
+      }
     }
 
-    function deleteVisit(id) {
+    async function deleteVisit(id) {
       if (!confirm('Bạn có chắc muốn xóa vĩnh viễn hồ sơ này?')) return;
       dbVisits = dbVisits.filter(function(x) { return x.id !== id; });
       saveVisits();
       renderAdminVisits(dbVisits);
+      if (isSheetConfigured()) {
+        try {
+          await fetch(SHEET_API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteVisit', id: id }) });
+        } catch (err) { console.warn('Lỗi đồng bộ deleteVisit lên Sheets.', err); }
+      }
     }
 
     // ============================================================
@@ -1112,7 +1228,7 @@
       document.getElementById('modal-pris-reason-container').classList.toggle('hidden', !isDis);
     }
 
-    function handleSavePrisoner(event) {
+    async function handleSavePrisoner(event) {
       event.preventDefault();
       var id      = document.getElementById('modal-pris-id').value;
       var name    = document.getElementById('modal-pris-name').value.toUpperCase().trim();
@@ -1124,21 +1240,42 @@
       if (!validateDate(dob)) { alert('Ngày sinh không hợp lệ (DD-MM-YYYY)!'); return; }
 
       var payload = { id: id || ('p_' + Date.now()), name: name, dob: dob, address: address, status: status, reason: reason };
+
+      showLoading('Đang lưu can phạm nhân...', true);
+
+      if (isSheetConfigured()) {
+        try {
+          var res = await fetch(SHEET_API_URL, { method: 'POST', body: JSON.stringify({ action: 'savePrisoner', prisoner: payload }) });
+          var data = await res.json();
+          if (data.result === 'success' && data.id) payload.id = data.id;
+        } catch (err) {
+          console.warn('Lỗi đồng bộ savePrisoner lên Sheets, đã lưu cục bộ.', err);
+        }
+      }
+
       if (id) {
         dbPrisoners = dbPrisoners.map(function(x) { return x.id === id ? payload : x; });
       } else {
         dbPrisoners.push(payload);
       }
       savePrisoners();
+      showLoading('', false);
       closePrisonerModal();
       renderAdminPrisoners(dbPrisoners);
       renderPrisonerList(dbPrisoners);
     }
 
-    function deletePrisoner(id) {
+    async function deletePrisoner(id) {
       if (!confirm('Xác nhận xóa vĩnh viễn hồ sơ can phạm nhân này?')) return;
+      showLoading('Đang xóa can phạm nhân...', true);
+      if (isSheetConfigured()) {
+        try {
+          await fetch(SHEET_API_URL, { method: 'POST', body: JSON.stringify({ action: 'deletePrisoner', id: id }) });
+        } catch (err) { console.warn('Lỗi đồng bộ deletePrisoner lên Sheets.', err); }
+      }
       dbPrisoners = dbPrisoners.filter(function(x) { return x.id !== id; });
       savePrisoners();
+      showLoading('', false);
       renderAdminPrisoners(dbPrisoners);
       renderPrisonerList(dbPrisoners);
     }
@@ -1164,8 +1301,13 @@
     // ============================================================
     window.onload = function() {
       initDatabase();
-      renderPrisonerList(dbPrisoners);
+      renderPrisonerList(dbPrisoners); // hiển thị ngay bằng cache, tránh màn hình trắng
       changeAdminTab('queue');
+
+      // Tải dữ liệu mới nhất từ Google Sheets ở nền (không chặn giao diện)
+      if (isSheetConfigured()) {
+        syncPrisonersFromSheet().then(function() { renderPrisonerList(dbPrisoners); });
+      }
     };
   </script>
 </body>
