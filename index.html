@@ -4,45 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hệ Thống Đăng Ký Thăm Gặp Tự Động - Trại Tạm Giam Số 1</title>
-  
   <script src="https://cdn.tailwindcss.com"></script>
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  
   <script src="https://unpkg.com/lucide@latest"></script>
-  
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .heading-font {
-      font-family: 'Space Grotesk', sans-serif;
-    }
-    /* Simple hide scrollbar for beautiful list */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    body { font-family: 'Inter', sans-serif; }
+    .heading-font { font-family: 'Space Grotesk', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     @media print {
-      body * {
-        visibility: hidden;
-      }
-      #print-ticket-area, #print-ticket-area * {
-        visibility: visible;
-      }
-      #print-ticket-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
+      body * { visibility: hidden; }
+      #print-ticket-area, #print-ticket-area * { visibility: visible; }
+      #print-ticket-area { position: absolute; left: 0; top: 0; width: 100%; }
     }
   </style>
   <script>
@@ -50,12 +26,7 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              red: '#ca1c24',
-              gold: '#fbbf24',
-              darkRed: '#9e141a',
-              bgGray: '#f8fafc',
-            }
+            brand: { red: '#ca1c24', gold: '#fbbf24', darkRed: '#9e141a', bgGray: '#f8fafc' }
           }
         }
       }
@@ -67,29 +38,24 @@
   <header class="bg-indigo-900 text-white shadow-xl relative overflow-hidden shrink-0">
     <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-800 rounded-full blur-3xl opacity-30 -mr-10 -mt-10"></div>
     <div class="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500 rounded-full blur-3xl opacity-10 -ml-10 -mb-10"></div>
-
     <div class="max-w-2xl mx-auto px-4 py-6 text-center flex flex-col items-center space-y-2 relative">
       <div class="space-y-1">
         <span class="block text-xs font-black tracking-widest text-indigo-200 uppercase">Bộ Công An</span>
         <span class="block text-sm md:text-base font-extrabold tracking-wider text-yellow-400 uppercase">Công an tỉnh Tây Ninh</span>
         <span class="block text-base md:text-lg font-black tracking-wide text-white uppercase">Trại Tạm giam số 1</span>
       </div>
-
-      <div class="w-20 h-[1px] bg-indigo-500/50 my-1"></div>
-
-      <h1 class="text-lg md:text-xl font-black tracking-tight uppercase heading-font text-white">
-        Hệ thống Đăng ký Thăm gặp Tự động
-      </h1>
+      <div class="w-20 h-px bg-indigo-500/50 my-1"></div>
+      <h1 class="text-lg md:text-xl font-black tracking-tight uppercase heading-font text-white">Hệ thống Đăng ký Thăm gặp Tự động</h1>
     </div>
   </header>
 
   <main class="flex-grow flex items-center justify-center p-4">
     <div class="bg-white p-6 rounded-3xl shadow-xl w-full max-w-lg border border-slate-200/80 relative overflow-hidden min-h-[400px]">
-      
       <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-700 via-purple-600 to-emerald-500"></div>
 
       <div id="notification-box" class="hidden p-4 rounded-2xl text-xs font-semibold mb-5 text-center border"></div>
 
+      <!-- FORM SCREEN -->
       <div id="screen-form" class="space-y-5">
         <div class="text-center">
           <div class="inline-flex items-center justify-center p-3 bg-indigo-50 text-indigo-700 rounded-full mb-3">
@@ -116,43 +82,40 @@
               <span class="w-1.5 h-3 bg-indigo-600 rounded"></span>
               Thông Tin Người Đi Thăm
             </h3>
-
             <div class="grid grid-cols-3 gap-2">
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Họ Tên Thân Nhân <span class="text-red-500">*</span></label>
-                <input type="text" id="visitor-name" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-medium focus:outline-none focus:ring-1.5 focus:ring-indigo-600 uppercase" placeholder="NGUYỄN VĂN A" required>
+                <input type="text" id="visitor-name" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600 uppercase" placeholder="NGUYỄN VĂN A" required>
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Giới Tính <span class="text-red-500">*</span></label>
-                <select id="visitor-gender" onchange="updateRelationships()" class="w-full border border-slate-200 rounded-xl py-2 px-2.5 text-xs font-medium focus:outline-none focus:ring-1.5 focus:ring-indigo-600 bg-white" required>
+                <select id="visitor-gender" onchange="updateRelationships()" class="w-full border border-slate-200 rounded-xl py-2 px-2.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-white" required>
                   <option value="">Chọn...</option>
                   <option value="Nam">Nam</option>
                   <option value="Nữ">Nữ</option>
                 </select>
               </div>
             </div>
-
             <div class="grid grid-cols-2 gap-2">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Ngày Sinh <span class="text-red-500">*</span></label>
-                <input type="text" id="visitor-dob" oninput="maskDateInput(this)" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold focus:outline-none focus:ring-1.5 focus:ring-indigo-600" placeholder="DD-MM-YYYY" required>
+                <input type="text" id="visitor-dob" oninput="maskDateInput(this)" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-600" placeholder="DD-MM-YYYY" required>
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mối Quan Hệ <span class="text-red-500">*</span></label>
-                <select id="visitor-relationship" class="w-full border border-slate-200 rounded-xl py-2 px-2.5 text-xs font-medium focus:outline-none focus:ring-1.5 focus:ring-indigo-600 bg-white" required>
+                <select id="visitor-relationship" class="w-full border border-slate-200 rounded-xl py-2 px-2.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-white" required>
                   <option value="">Chọn giới tính trước...</option>
                 </select>
               </div>
             </div>
-
             <div class="grid grid-cols-2 gap-2">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Số CCCD (12 số) <span class="text-red-500">*</span></label>
-                <input type="text" id="visitor-cccd" maxlength="12" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold focus:outline-none focus:ring-1.5 focus:ring-indigo-600" placeholder="072XXXXXXXXX" required>
+                <input type="text" id="visitor-cccd" maxlength="12" inputmode="numeric" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-600" placeholder="072XXXXXXXXX" required>
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Số Điện Thoại <span class="text-red-500">*</span></label>
-                <input type="tel" id="visitor-phone" maxlength="10" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold focus:outline-none focus:ring-1.5 focus:ring-indigo-600" placeholder="09XXXXXXXX" required>
+                <input type="tel" id="visitor-phone" maxlength="10" inputmode="numeric" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-600" placeholder="09XXXXXXXX" required>
               </div>
             </div>
           </div>
@@ -162,26 +125,23 @@
               <i data-lucide="check-circle" class="w-3 h-3"></i> Đã chọn nhanh
               <button type="button" onclick="clearSelectedPrisoner()" class="ml-1 text-emerald-900 hover:text-red-600">×</button>
             </div>
-
             <h3 class="text-xs font-extrabold text-emerald-700 uppercase tracking-widest flex items-center gap-1.5">
               <span class="w-1.5 h-3 bg-emerald-600 rounded"></span>
               Thông Tin Can Phạm Nhân Được Thăm
             </h3>
-
             <div class="grid grid-cols-3 gap-2">
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Họ Tên Can Phạm <span class="text-red-500">*</span></label>
-                <input type="text" id="prisoner-name" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-medium focus:outline-none focus:ring-1.5 focus:ring-emerald-500 uppercase" placeholder="NGUYỄN VĂN B" required>
+                <input type="text" id="prisoner-name" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase" placeholder="NGUYỄN VĂN B" required>
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Ngày Sinh <span class="text-red-500">*</span></label>
-                <input type="text" id="prisoner-dob" oninput="maskDateInput(this)" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold focus:outline-none focus:ring-1.5 focus:ring-emerald-500" placeholder="DD-MM-YYYY" required>
+                <input type="text" id="prisoner-dob" oninput="maskDateInput(this)" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="DD-MM-YYYY" required>
               </div>
             </div>
-
             <div>
               <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Hộ Khẩu Thường Trú <span class="text-red-500">*</span></label>
-              <input type="text" id="prisoner-address" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-medium focus:outline-none focus:ring-1.5 focus:ring-emerald-500" placeholder="Phường 1, TP. Tây Ninh, Tây Ninh" required>
+              <input type="text" id="prisoner-address" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Phường 1, TP. Tây Ninh, Tây Ninh" required>
             </div>
           </div>
 
@@ -199,6 +159,7 @@
         </form>
       </div>
 
+      <!-- REGULATIONS SCREEN -->
       <div id="screen-regulations" class="hidden space-y-5">
         <div class="text-center">
           <div class="inline-flex items-center justify-center p-3 bg-indigo-50 text-indigo-700 rounded-full mb-3">
@@ -207,54 +168,30 @@
           <h2 class="text-xl md:text-2xl font-bold text-slate-800 tracking-tight heading-font">Nội Quy Thăm Gặp Thân Nhân</h2>
           <p class="text-xs text-slate-500 mt-1">Vui lòng đọc kỹ trước khi thực hiện quy trình đăng ký cổng gác</p>
         </div>
-
-        <div class="border border-slate-150 rounded-2xl overflow-hidden bg-white max-h-[300px] overflow-y-auto p-4 space-y-4 shadow-inner text-xs leading-relaxed text-slate-600">
+        <div class="border border-slate-100 rounded-2xl overflow-hidden bg-white max-h-[300px] overflow-y-auto p-4 space-y-4 shadow-inner text-xs leading-relaxed text-slate-600">
           <div class="space-y-1.5 border-b border-slate-100 pb-3">
-            <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-indigo-700">
-              <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
-              1. Đối tượng được thăm gặp
-            </h4>
-            <p class="pl-3">
-              Thân nhân can phạm nhân bao gồm: Bố mẹ ruột, vợ, chồng, con ruột, anh chị em ruột, ông bà nội ngoại. Khi đi bắt buộc phải đem theo CCCD gốc và Giấy chứng minh mối quan hệ (nếu cần đối chiếu đột xuất).
-            </p>
+            <h4 class="font-bold flex items-center gap-1.5 text-indigo-700"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>1. Đối tượng được thăm gặp</h4>
+            <p class="pl-3">Thân nhân can phạm nhân bao gồm: Bố mẹ ruột, vợ, chồng, con ruột, anh chị em ruột, ông bà nội ngoại. Khi đi bắt buộc phải đem theo CCCD gốc và Giấy chứng minh mối quan hệ (nếu cần đối chiếu đột xuất).</p>
           </div>
-
           <div class="space-y-1.5 border-b border-slate-100 pb-3">
-            <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-indigo-700">
-              <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
-              2. Đồ vật nghiêm cấm mang vào
-            </h4>
-            <p class="pl-3 text-red-600 font-semibold">
-              Tuyệt đối nghiêm cấm các loại chất kích thích, điện thoại di động, thiết bị ghi âm ghi hình, vũ khí, kim loại nhọn, tiền mặt và các vật dụng cấm khác theo quy định pháp luật.
-            </p>
+            <h4 class="font-bold flex items-center gap-1.5 text-indigo-700"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>2. Đồ vật nghiêm cấm mang vào</h4>
+            <p class="pl-3 text-red-600 font-semibold">Tuyệt đối nghiêm cấm các loại chất kích thích, điện thoại di động, thiết bị ghi âm ghi hình, vũ khí, kim loại nhọn, tiền mặt và các vật dụng cấm khác theo quy định pháp luật.</p>
           </div>
-
           <div class="space-y-1.5 border-b border-slate-100 pb-3">
-            <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-indigo-700">
-              <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
-              3. Chế độ kỷ luật
-            </h4>
-            <p class="pl-3">
-              Những can phạm nhân đang trong thời gian thi hành hình phạt kỷ luật buồng giam sẽ bị tước quyền thăm gặp. Hệ thống đăng ký tự động sẽ tự động phát hiện và chặn các hồ sơ này để đảm bảo an ninh trại giam.
-            </p>
+            <h4 class="font-bold flex items-center gap-1.5 text-indigo-700"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>3. Chế độ kỷ luật</h4>
+            <p class="pl-3">Những can phạm nhân đang trong thời gian thi hành hình phạt kỷ luật buồng giam sẽ bị tước quyền thăm gặp. Hệ thống đăng ký tự động sẽ tự động phát hiện và chặn các hồ sơ này để đảm bảo an ninh trại giam.</p>
           </div>
-
           <div class="space-y-1.5 pb-1">
-            <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-indigo-700">
-              <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
-              4. Thời gian và Tác phong
-            </h4>
-            <p class="pl-3">
-              Trang phục của thân nhân đi thăm phải lịch sự, nghiêm túc. Nghe theo hướng dẫn và tuân thủ tuyệt đối khẩu lệnh của Cán bộ trực ban tại Nhà thăm gặp.
-            </p>
+            <h4 class="font-bold flex items-center gap-1.5 text-indigo-700"><span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>4. Thời gian và Tác phong</h4>
+            <p class="pl-3">Trang phục của thân nhân đi thăm phải lịch sự, nghiêm túc. Nghe theo hướng dẫn và tuân thủ tuyệt đối khẩu lệnh của Cán bộ trực ban tại Nhà thăm gặp.</p>
           </div>
         </div>
-
         <button onclick="changeScreen('form')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-4 rounded-xl text-sm transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer">
           Đồng Ý & Quay Lại Đăng Ký
         </button>
       </div>
 
+      <!-- PRISONER LIST SCREEN -->
       <div id="screen-prisoners" class="hidden space-y-5">
         <div class="text-center">
           <div class="inline-flex items-center justify-center p-3 bg-emerald-50 text-emerald-700 rounded-full mb-3">
@@ -263,34 +200,23 @@
           <h2 class="text-xl md:text-2xl font-bold text-slate-800 tracking-tight heading-font">Danh Sách Can Phạm Được Thăm Gặp</h2>
           <p class="text-xs text-slate-500 mt-1">Tra cứu nhanh khả năng nhận cuộc thăm đợt này</p>
         </div>
-
         <div class="flex gap-2">
           <div class="relative flex-grow">
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-            <input type="text" id="prisoner-search-input" oninput="filterPrisonerList()" placeholder="Tìm theo Tên hoặc Ngày sinh (VD: NGUYỄN hoặc 12-05)..." class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-1.5 focus:ring-emerald-500 focus:border-transparent transition-all">
+            <input type="text" id="prisoner-search-input" oninput="filterPrisonerList()" placeholder="Tìm theo Tên hoặc Ngày sinh..." class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
           </div>
-          <button onclick="loadPrisoners()" class="p-2.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-xl text-slate-600 transition-colors flex items-center justify-center cursor-pointer" title="Tải lại">
-            <i data-lucide="refresh-cw" class="w-4 h-4" id="btn-reload-prisoners-icon"></i>
+          <button onclick="renderPrisonerList(dbPrisoners)" class="p-2.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-xl text-slate-600 transition-colors flex items-center justify-center cursor-pointer" title="Làm mới">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
           </button>
         </div>
-
-        <div id="prisoner-list-loading" class="hidden py-12 text-center space-y-3">
-          <div class="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p class="text-xs text-slate-500 font-medium">Đang tải danh sách can phạm...</p>
-        </div>
-
-        <div id="prisoner-list-container" class="border border-slate-150 rounded-xl overflow-hidden bg-white max-h-[280px] overflow-y-auto shadow-inner">
-          </div>
-
-        <p class="text-[11px] text-center text-slate-400 italic">
-          * Mẹo: Click trực tiếp vào dòng can phạm nhân để điền nhanh thông tin vào tờ khai đăng ký.
-        </p>
-
+        <div id="prisoner-list-container" class="border border-slate-200 rounded-xl overflow-hidden bg-white max-h-[280px] overflow-y-auto shadow-inner"></div>
+        <p class="text-[11px] text-center text-slate-400 italic">* Mẹo: Click trực tiếp vào dòng can phạm nhân để điền nhanh thông tin vào tờ khai đăng ký.</p>
         <button onclick="changeScreen('form')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-4 rounded-xl text-sm transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer">
           Quay Lại Tờ Khai
         </button>
       </div>
 
+      <!-- TICKET SCREEN -->
       <div id="screen-ticket" class="hidden space-y-5">
         <div class="text-center">
           <div class="inline-flex items-center justify-center p-3 bg-green-50 text-green-700 rounded-full mb-3">
@@ -302,30 +228,25 @@
 
         <div id="print-ticket-area" class="bg-brand-bgGray p-5 rounded-2xl border-4 border-indigo-900 shadow-lg relative overflow-hidden space-y-4">
           <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-red-600 via-yellow-400 to-indigo-900"></div>
-
           <div class="text-center pt-2 pb-1 border-b border-slate-200">
             <p class="text-[8px] font-bold text-slate-500 tracking-widest uppercase">BỘ CÔNG AN • TÂY NINH</p>
             <p class="text-[10px] font-extrabold text-indigo-950 uppercase tracking-wider">TRẠI TẠM GIAM SỐ 1 - CỔNG GÁC</p>
             <h3 class="text-xs font-black text-brand-red uppercase tracking-wider mt-1">VÉ THĂM GẶP PHẠM NHÂN</h3>
           </div>
-
           <div class="bg-indigo-50 border-2 border-indigo-600 rounded-2xl py-3 px-4 text-center max-w-[200px] mx-auto shadow-inner">
             <p class="text-[9px] font-black tracking-wider text-indigo-900 uppercase">SỐ THỨ TỰ VÀO CỔNG</p>
             <p id="ticket-stt" class="text-5xl font-black text-indigo-700 mt-1">001</p>
           </div>
-
           <div class="relative py-1">
             <div class="border-t border-dashed border-slate-300 w-full"></div>
             <div class="absolute -left-6 -top-1 w-3.5 h-3.5 bg-white border-r border-slate-300 rounded-full"></div>
             <div class="absolute -right-6 -top-1 w-3.5 h-3.5 bg-white border-l border-slate-300 rounded-full"></div>
           </div>
-
           <div class="grid grid-cols-2 gap-x-3 gap-y-2.5 text-[11px] leading-snug">
             <div class="col-span-2 bg-indigo-50/40 p-2 rounded-xl border border-indigo-100/60">
               <span class="block text-[8px] text-slate-400 font-bold uppercase">Ngày Thăm Gặp Hợp Lệ</span>
               <span id="ticket-visit-date" class="font-extrabold text-indigo-900 text-xs">...</span>
             </div>
-            
             <div class="border-b border-slate-100 pb-1.5">
               <span class="block text-[8px] text-slate-400 font-bold uppercase">Họ Tên Thân Nhân</span>
               <span id="ticket-visitor-name" class="font-bold text-slate-800 uppercase">...</span>
@@ -342,19 +263,17 @@
               <span class="block text-[8px] text-slate-400 font-bold uppercase">Số Điện Thoại</span>
               <span id="ticket-visitor-phone" class="font-semibold text-slate-700">...</span>
             </div>
-
             <div class="col-span-2 pt-1">
               <div class="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100/60 space-y-1">
                 <span class="block text-[8px] text-emerald-800 font-bold uppercase">Can Phạm Nhân Được Thăm</span>
                 <p class="font-black text-slate-800 text-xs uppercase" id="ticket-prisoner-name">...</p>
                 <div class="flex justify-between text-[10px] text-slate-500 font-medium">
                   <span>Ngày sinh: <b id="ticket-prisoner-dob" class="text-slate-700">...</b></span>
-                  <span>Hộ khẩu: <b id="ticket-prisoner-address" class="text-slate-700">...</b></span>
+                  <span class="truncate ml-2">Hộ khẩu: <b id="ticket-prisoner-address" class="text-slate-700">...</b></span>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="flex items-center justify-between gap-3 pt-2 border-t border-slate-200">
             <div class="space-y-0.5">
               <div class="flex items-center gap-1 text-indigo-700 text-[10px] font-black uppercase">
@@ -379,10 +298,10 @@
             Đăng Ký Lượt Mới
           </button>
         </div>
-
         <canvas id="export-canvas" class="hidden"></canvas>
       </div>
 
+      <!-- ADMIN SCREEN -->
       <div id="screen-admin" class="hidden space-y-5 max-w-2xl mx-auto">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
           <div class="flex items-center gap-2">
@@ -411,18 +330,11 @@
               <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
               <input type="text" id="queue-search-input" oninput="filterVisits()" placeholder="Tìm tên thân nhân, CCCD hoặc can phạm..." class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-xs font-medium focus:outline-none focus:ring-1 focus:ring-indigo-600">
             </div>
-            <button onclick="loadAdminVisits()" class="p-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-600 cursor-pointer">
-              <i data-lucide="refresh-cw" class="w-4 h-4" id="btn-reload-queue-icon"></i>
+            <button onclick="renderAdminVisits(dbVisits)" class="p-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-600 cursor-pointer" title="Làm mới">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
             </button>
           </div>
-
-          <div id="queue-list-loading" class="hidden py-8 text-center">
-            <div class="w-6 h-6 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-            <span class="text-xs text-slate-500 font-medium">Đang đồng bộ từ đám mây...</span>
-          </div>
-
-          <div id="queue-list-container" class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
-            </div>
+          <div id="queue-list-container" class="space-y-2 max-h-[350px] overflow-y-auto pr-1"></div>
         </div>
 
         <div id="admin-tab-prisoners" class="hidden space-y-4">
@@ -435,393 +347,257 @@
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Thêm can phạm
             </button>
           </div>
-
-          <div id="admin-prisoners-list-container" class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
-            </div>
+          <div id="admin-prisoners-list-container" class="space-y-2 max-h-[350px] overflow-y-auto pr-1"></div>
         </div>
 
         <div id="admin-tab-settings" class="hidden space-y-4">
           <form onsubmit="handleSaveSettings(event)" class="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/60 text-xs">
             <h3 class="font-extrabold text-slate-800 uppercase tracking-wider mb-2 flex items-center gap-1">
               <i data-lucide="settings" class="w-4 h-4 text-indigo-600"></i>
-              Cấu Hình Hệ Thống Gác Đám Mây
+              Cấu Hình Hệ Thống Gác
             </h3>
-
             <div class="space-y-3">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Ngày Thăm Gặp Đợt Tiếp Theo</label>
                 <input type="text" id="cfg-visit-date" oninput="maskDateInput(this)" class="w-full border border-slate-200 rounded-lg py-2 px-3 text-xs font-bold focus:outline-none focus:ring-1 focus:ring-indigo-600" placeholder="DD-MM-YYYY" required>
               </div>
-
               <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Mã PIN cán bộ (Dùng truy cập nhanh)</label>
-                <input type="text" id="cfg-pin-code" maxlength="6" class="w-full border border-slate-200 rounded-lg py-2 px-3 text-xs font-bold focus:outline-none focus:ring-1 focus:ring-indigo-600" placeholder="113" required>
-              </div>
-
-              <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Google Sheets Web App API URL <span class="text-indigo-600 font-extrabold">(Kết nối chính)</span></label>
-                <input type="url" id="cfg-sheet-url" class="w-full border border-slate-200 rounded-lg py-2 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 font-mono text-[10px]" placeholder="https://script.google.com/macros/s/XXXXX/exec">
-                <span class="text-[9px] text-slate-400 mt-1 block leading-normal">
-                  * Nhập đường dẫn API Web App sau khi bạn triển khai Google Apps Script để đồng bộ hóa dữ liệu thời gian thực trực tiếp từ Google Sheets. Nếu để trống, hệ thống sẽ sử dụng <b>Bộ nhớ đệm trình duyệt (Offline Cache LocalStorage)</b>.
-                </span>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Mã PIN cán bộ (3–6 ký tự số)</label>
+                <input type="password" id="cfg-pin-code" maxlength="6" autocomplete="new-password" class="w-full border border-slate-200 rounded-lg py-2 px-3 text-xs font-bold focus:outline-none focus:ring-1 focus:ring-indigo-600 tracking-widest" placeholder="••••••" required>
               </div>
             </div>
-
             <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl cursor-pointer shadow-md transition-colors flex items-center justify-center gap-1">
-              <i data-lucide="database" class="w-4 h-4"></i> Lưu Cấu Hình Hệ Thống
+              <i data-lucide="save" class="w-4 h-4"></i> Lưu Cấu Hình
             </button>
           </form>
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-800 space-y-1">
+            <p class="font-bold flex items-center gap-1"><i data-lucide="info" class="w-3.5 h-3.5"></i> Lưu ý về lưu trữ dữ liệu</p>
+            <p>Dữ liệu được lưu cục bộ trên thiết bị (LocalStorage). Mỗi thiết bị quản lý độc lập. Để đồng bộ nhiều thiết bị, cần tích hợp máy chủ riêng.</p>
+          </div>
         </div>
       </div>
 
-      <div id="loading-overlay" class="hidden absolute inset-0 bg-white/90 z-50 flex flex-col items-center justify-center space-y-3">
+      <!-- LOADING OVERLAY -->
+      <div id="loading-overlay" class="hidden absolute inset-0 bg-white/90 z-50 flex flex-col items-center justify-center space-y-3 rounded-3xl">
         <div class="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-        <p id="loading-overlay-text" class="text-xs font-bold text-slate-600">Đang đối chiếu đối soát cổng gác...</p>
+        <p id="loading-overlay-text" class="text-xs font-bold text-slate-600">Đang xử lý...</p>
       </div>
-
     </div>
   </main>
 
-  <footer class="bg-slate-900 text-slate-500 text-center py-4 text-[11px] border-t border-slate-800 space-y-2 shrink-0">
+  <footer class="bg-slate-900 text-slate-500 text-center py-4 text-[11px] border-t border-slate-800 shrink-0">
     <div class="max-w-2xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-      <p>© 2026 Trại Tạm Giam Số 1 Tây Ninh - Hệ Thống Đồng Bộ Đám Mây Google Sheets</p>
-      
-      <button onclick="openPinModal()" class="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors py-1.5 px-3 bg-slate-800 hover:bg-slate-750 rounded-xl border border-slate-700/60 cursor-pointer">
+      <p>© 2026 Trại Tạm Giam Số 1 Tây Ninh — Hệ thống nội bộ</p>
+      <button onclick="openPinModal()" class="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors py-1.5 px-3 bg-slate-800 hover:bg-slate-700 rounded-xl border border-slate-700/60 cursor-pointer">
         <i data-lucide="lock" class="w-3.5 h-3.5"></i>
         <span>Khu vực Cán bộ</span>
       </button>
     </div>
   </footer>
 
+  <!-- PIN MODAL -->
   <div id="pin-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-sm border border-slate-200 relative">
       <div class="absolute top-0 left-0 right-0 h-1 bg-indigo-600 rounded-t-3xl"></div>
-      
       <h3 class="text-base font-bold text-slate-800 text-center flex items-center justify-center gap-2">
         <i data-lucide="key" class="w-5 h-5 text-indigo-600"></i>
         Xác Minh Danh Tính Cán Bộ
       </h3>
-      <p class="text-[11px] text-slate-400 text-center mt-1">
-        Nhập mã PIN của bạn để truy cập Bảng quản lý gác (Bảo mật)
-        <span id="lbl-pin-default" class="hidden"></span>
-      </p>
-
+      <p class="text-[11px] text-slate-400 text-center mt-1">Nhập mã PIN để truy cập Bảng quản lý gác</p>
       <form onsubmit="handlePinSubmit(event)" class="mt-5 space-y-4">
-        <div>
-          <input type="password" id="pin-input" maxlength="6" placeholder="• • •" class="w-full border-2 border-slate-200 rounded-xl py-3 px-4 text-center font-black tracking-[1em] text-lg focus:outline-none focus:border-indigo-600" required>
-        </div>
-
+        <input type="password" id="pin-input" maxlength="6" placeholder="• • •" autocomplete="off"
+          class="w-full border-2 border-slate-200 rounded-xl py-3 px-4 text-center font-black tracking-[0.5em] text-lg focus:outline-none focus:border-indigo-600" required>
         <p id="pin-error" class="hidden text-[10px] font-bold text-red-600 text-center"></p>
-
         <div class="flex gap-2">
-          <button type="button" onclick="closePinModal()" class="flex-grow bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 px-3 rounded-xl text-xs cursor-pointer">
-            Hủy bỏ
-          </button>
-          <button type="submit" class="flex-grow bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded-xl text-xs cursor-pointer shadow">
-            Xác Nhận
-          </button>
+          <button type="button" onclick="closePinModal()" class="flex-grow bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 px-3 rounded-xl text-xs cursor-pointer">Hủy bỏ</button>
+          <button type="submit" class="flex-grow bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded-xl text-xs cursor-pointer shadow">Xác Nhận</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- PRISONER MODAL -->
   <div id="prisoner-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-md border border-slate-200 relative text-xs">
       <div class="absolute top-0 left-0 right-0 h-1 bg-emerald-600 rounded-t-3xl"></div>
-      
       <h3 id="prisoner-modal-title" class="text-sm font-bold text-slate-800 flex items-center gap-1.5 mb-4">
         <i data-lucide="users" class="w-5 h-5 text-emerald-600"></i>
         Thêm Can Phạm Nhân Mới
       </h3>
-
       <form onsubmit="handleSavePrisoner(event)" class="space-y-3">
         <input type="hidden" id="modal-pris-id">
-        
         <div>
           <label class="block font-bold text-slate-500 uppercase mb-1">Họ tên can phạm <span class="text-red-500">*</span></label>
-          <input type="text" id="modal-pris-name" class="w-full border border-slate-200 rounded-lg py-2 px-3 uppercase font-semibold focus:ring-1 focus:ring-emerald-500" required>
+          <input type="text" id="modal-pris-name" class="w-full border border-slate-200 rounded-lg py-2 px-3 uppercase font-semibold focus:outline-none focus:ring-1 focus:ring-emerald-500" required>
         </div>
-
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block font-bold text-slate-500 uppercase mb-1">Ngày sinh <span class="text-red-500">*</span></label>
-            <input type="text" id="modal-pris-dob" oninput="maskDateInput(this)" class="w-full border border-slate-200 rounded-lg py-2 px-3 font-semibold focus:ring-1 focus:ring-emerald-500" placeholder="DD-MM-YYYY" required>
+            <input type="text" id="modal-pris-dob" oninput="maskDateInput(this)" class="w-full border border-slate-200 rounded-lg py-2 px-3 font-semibold focus:outline-none focus:ring-1 focus:ring-emerald-500" placeholder="DD-MM-YYYY" required>
           </div>
           <div>
             <label class="block font-bold text-slate-500 uppercase mb-1">Trạng thái gặp <span class="text-red-500">*</span></label>
-            <select id="modal-pris-status" onchange="toggleDisciplineReason()" class="w-full border border-slate-200 rounded-lg py-2 px-2.5 focus:ring-1 focus:ring-emerald-500 bg-white" required>
+            <select id="modal-pris-status" onchange="toggleDisciplineReason()" class="w-full border border-slate-200 rounded-lg py-2 px-2.5 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" required>
               <option value="active">Được gặp</option>
               <option value="disciplined">Đang Kỷ luật (Cấm gặp)</option>
             </select>
           </div>
         </div>
-
         <div>
           <label class="block font-bold text-slate-500 uppercase mb-1">Hộ khẩu thường trú <span class="text-red-500">*</span></label>
-          <input type="text" id="modal-pris-address" class="w-full border border-slate-200 rounded-lg py-2 px-3 focus:ring-1 focus:ring-emerald-500" placeholder="Huyện Châu Thành, Tây Ninh" required>
+          <input type="text" id="modal-pris-address" class="w-full border border-slate-200 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-emerald-500" placeholder="Huyện Châu Thành, Tây Ninh" required>
         </div>
-
         <div id="modal-pris-reason-container" class="hidden">
-          <label class="block font-bold text-slate-500 uppercase mb-1 text-red-600">Lý do kỷ luật / Thời gian kỷ luật</label>
-          <input type="text" id="modal-pris-reason" class="w-full border border-red-200 rounded-lg py-2 px-3 focus:ring-1 focus:ring-red-500 bg-red-50/50 text-red-900" placeholder="Vi phạm điều lệ buồng giam 14 ngày (Đến 15/07)">
+          <label class="block font-bold text-red-600 uppercase mb-1">Lý do kỷ luật / Thời gian</label>
+          <input type="text" id="modal-pris-reason" class="w-full border border-red-200 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-500 bg-red-50/50 text-red-900" placeholder="Vi phạm điều lệ buồng giam 14 ngày...">
         </div>
-
         <div class="flex gap-2 pt-2">
-          <button type="button" onclick="closePrisonerModal()" class="flex-grow bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 px-3 rounded-xl cursor-pointer">
-            Hủy bỏ
-          </button>
-          <button type="submit" class="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 rounded-xl cursor-pointer shadow">
-            Lưu Hồ Sơ
-          </button>
+          <button type="button" onclick="closePrisonerModal()" class="flex-grow bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 px-3 rounded-xl cursor-pointer">Hủy bỏ</button>
+          <button type="submit" class="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 rounded-xl cursor-pointer shadow">Lưu Hồ Sơ</button>
         </div>
       </form>
     </div>
   </div>
 
   <script>
-    // ==============================================
-    // CẤU HÌNH HỆ THỐNG CƠ BẢN
-    // ==============================================
-    // CHÈN LINK GOOGLE SHEETS WEB APP CỦA BẠN VÀO GIỮA 2 DẤU NGOẶC KÉP BÊN DƯỚI:
-    const CONFIG_SHEET_URL = "https://script.google.com/macros/s/AKfycbziS8WsJSa4rPMiOiAt7SPCCqiE2e5A4QvzPW-iBQJHr7UZzZR_e550Vnn8eh-DLd-DBA/exec"; 
+    // ============================================================
+    // SEED DATA (chỉ dùng khi localStorage chưa có dữ liệu)
+    // ============================================================
+    var SEED_PRISONERS = [
+      { id: "p1", name: "NGUYEN VAN HAI", dob: "12-05-1994", address: "Hoa Thanh, Tay Ninh", status: "active", reason: "" },
+      { id: "p2", name: "TRAN MINH TAM", dob: "25-08-1990", address: "Chau Thanh, Tay Ninh", status: "active", reason: "" },
+      { id: "p3", name: "LE HOANG NAM", dob: "03-11-1998", address: "Ben Cau, Tay Ninh", status: "disciplined", reason: "Vi pham noi quy giam giu, ky luat cach ly 10 ngay tu 25-06" },
+      { id: "p4", name: "PHAM QUOC ANH", dob: "14-02-1988", address: "Go Dau, Tay Ninh", status: "active", reason: "" },
+      { id: "p5", name: "VU DINH TRONG", dob: "30-10-1995", address: "Tan Chau, Tay Ninh", status: "active", reason: "" }
+    ];
 
-    // Global State variables
-    let currentScreen = 'form';
-    let currentAdminTab = 'queue';
-    let selectedPrisoner = null;
-    let currentVisit = null;
+    var SEED_VISITS = [
+      { id: "v1", stt: "001", visitorName: "NGUYEN THI MAI", visitorGender: "Nu", visitorDob: "15-09-1972", visitorCccd: "072172004561", visitorPhone: "0912345678", relationship: "Me", prisonerName: "NGUYEN VAN HAI", prisonerDob: "12-05-1994", prisonerAddress: "Hoa Thanh, Tay Ninh", date: "30-06-2026", status: "checked_in", timestamp: "2026-06-27T10:15:30.000Z" },
+      { id: "v2", stt: "002", visitorName: "TRAN VAN HUNG", visitorGender: "Nam", visitorDob: "04-03-1985", visitorCccd: "072085002134", visitorPhone: "0987654321", relationship: "Anh ruot", prisonerName: "TRAN MINH TAM", prisonerDob: "25-08-1990", prisonerAddress: "Chau Thanh, Tay Ninh", date: "30-06-2026", status: "pending", timestamp: "2026-06-27T11:42:15.000Z" }
+    ];
 
-    // Database state loaded from LocalStorage (Fallback Database)
-    let dbVisits = [];
-    let dbPrisoners = [];
-    let dbSettings = {
-      visitDate: '30-06-2026',
-      pinCode: '111',
-      sheetUrl: '' 
-    };
+    var SEED_SETTINGS = { visitDate: "30-06-2026", pinCode: "111" };
 
-    // Initialize mock database seeds if local storage is empty
-    const seedData = {
-      prisoners: [
-        { id: "p1", name: "NGUYỄN VĂN HẢI", dob: "12-05-1994", address: "Hòa Thành, Tây Ninh", status: "active", reason: "" },
-        { id: "p2", name: "TRẦN MINH TÂM", dob: "25-08-1990", address: "Châu Thành, Tây Ninh", status: "active", reason: "" },
-        { id: "p3", name: "LÊ HOÀNG NAM", dob: "03-11-1998", address: "Bến Cầu, Tây Ninh", status: "disciplined", reason: "Vi phạm nội quy giam giữ, kỷ luật cách ly 10 ngày từ 25-06" },
-        { id: "p4", name: "PHẠM QUỐC ANH", dob: "14-02-1988", address: "Gò Dầu, Tây Ninh", status: "active", reason: "" },
-        { id: "p5", name: "VŨ ĐÌNH TRỌNG", dob: "30-10-1995", address: "Tân Châu, Tây Ninh", status: "active", reason: "" }
-      ],
-      visits: [
-        {
-          id: "v1",
-          stt: "001",
-          visitorName: "NGUYỄN THỊ MAI",
-          visitorGender: "Nữ",
-          visitorDob: "15-09-1972",
-          visitorCccd: "072172004561",
-          visitorPhone: "0912345678",
-          relationship: "Mẹ",
-          prisonerName: "NGUYỄN VĂN HẢI",
-          prisonerDob: "12-05-1994",
-          prisonerAddress: "Hòa Thành, Tây Ninh",
-          date: "30-06-2026",
-          status: "checked_in",
-          timestamp: "2026-06-27T10:15:30.000Z"
-        },
-        {
-          id: "v2",
-          stt: "002",
-          visitorName: "TRẦN VĂN HÙNG",
-          visitorGender: "Nam",
-          visitorDob: "04-03-1985",
-          visitorCccd: "072085002134",
-          visitorPhone: "0987654321",
-          relationship: "Anh ruột",
-          prisonerName: "TRẦN MINH TÂM",
-          prisonerDob: "25-08-1990",
-          prisonerAddress: "Châu Thành, Tây Ninh",
-          date: "30-06-2026",
-          status: "pending",
-          timestamp: "2026-06-27T11:42:15.000Z"
-        }
-      ]
-    };
+    // ============================================================
+    // GLOBAL STATE
+    // ============================================================
+    var currentScreen = 'form';
+    var currentAdminTab = 'queue';
+    var selectedPrisoner = null;
+    var currentVisit = null;
+    var dbVisits = [];
+    var dbPrisoners = [];
+    var dbSettings = { visitDate: "30-06-2026", pinCode: "111" };
 
-    // Bootstrapping
+    // ============================================================
+    // STORAGE HELPERS
+    // ============================================================
+    function saveSettings()  { localStorage.setItem('tg1_settings',  JSON.stringify(dbSettings));  }
+    function savePrisoners() { localStorage.setItem('tg1_prisoners', JSON.stringify(dbPrisoners)); }
+    function saveVisits()    { localStorage.setItem('tg1_visits',    JSON.stringify(dbVisits));    }
+
     function initDatabase() {
-      if (!localStorage.getItem('tg1_settings')) {
-        // Gán link từ biến cấu hình nếu có
-        dbSettings.sheetUrl = CONFIG_SHEET_URL !== "" ? CONFIG_SHEET_URL : dbSettings.sheetUrl;
-        localStorage.setItem('tg1_settings', JSON.stringify(dbSettings));
-      } else {
-        dbSettings = JSON.parse(localStorage.getItem('tg1_settings'));
-        
-        // Cập nhật đè lại link cấu hình nếu có sửa trực tiếp ở code
-        if (CONFIG_SHEET_URL !== "" && dbSettings.sheetUrl !== CONFIG_SHEET_URL) {
-            dbSettings.sheetUrl = CONFIG_SHEET_URL;
-            localStorage.setItem('tg1_settings', JSON.stringify(dbSettings));
-        }
+      // Settings
+      try {
+        var s = localStorage.getItem('tg1_settings');
+        dbSettings = s ? JSON.parse(s) : Object.assign({}, SEED_SETTINGS);
+        if (!dbSettings.visitDate) dbSettings.visitDate = SEED_SETTINGS.visitDate;
+        if (!dbSettings.pinCode)   dbSettings.pinCode   = SEED_SETTINGS.pinCode;
+        // Migrate PIN cũ
+        if (dbSettings.pinCode === '113') dbSettings.pinCode = '111';
+        saveSettings();
+      } catch(e) { dbSettings = Object.assign({}, SEED_SETTINGS); saveSettings(); }
 
-        // Automatically migrate old 113 PIN code to 111
-        if (dbSettings.pinCode === '113') {
-          dbSettings.pinCode = '111';
-          localStorage.setItem('tg1_settings', JSON.stringify(dbSettings));
-        }
-      }
+      // Prisoners
+      try {
+        var p = localStorage.getItem('tg1_prisoners');
+        dbPrisoners = p ? JSON.parse(p) : SEED_PRISONERS.slice();
+        if (!p) savePrisoners();
+      } catch(e) { dbPrisoners = SEED_PRISONERS.slice(); savePrisoners(); }
 
-      if (!localStorage.getItem('tg1_prisoners')) {
-        localStorage.setItem('tg1_prisoners', JSON.stringify(seedData.prisoners));
-        dbPrisoners = seedData.prisoners;
-      } else {
-        dbPrisoners = JSON.parse(localStorage.getItem('tg1_prisoners'));
-      }
+      // Visits
+      try {
+        var v = localStorage.getItem('tg1_visits');
+        dbVisits = v ? JSON.parse(v) : SEED_VISITS.slice();
+        if (!v) saveVisits();
+      } catch(e) { dbVisits = SEED_VISITS.slice(); saveVisits(); }
 
-      if (!localStorage.getItem('tg1_visits')) {
-        localStorage.setItem('tg1_visits', JSON.stringify(seedData.visits));
-        dbVisits = seedData.visits;
-      } else {
-        dbVisits = JSON.parse(localStorage.getItem('tg1_visits'));
-      }
+      document.getElementById('lbl-visit-date').textContent = dbSettings.visitDate;
+      document.getElementById('cfg-visit-date').value       = dbSettings.visitDate;
+      // PIN không hiển thị ra DOM vì lý do bảo mật
 
-      // Sync views on load
-      document.getElementById('lbl-visit-date').innerText = dbSettings.visitDate;
-      document.getElementById('lbl-pin-default').innerText = dbSettings.pinCode;
-      
-      // Load into setting form values
-      document.getElementById('cfg-visit-date').value = dbSettings.visitDate;
-      document.getElementById('cfg-pin-code').value = dbSettings.pinCode;
-      document.getElementById('cfg-sheet-url').value = dbSettings.sheetUrl || '';
-      
       lucide.createIcons();
     }
 
-    // Call init on window load
-    window.onload = function() {
-      initDatabase();
-      loadPrisoners();
-    };
-
-    // HELPER: Show Screen View Transitions
-    function changeScreen(screenName) {
-      currentScreen = screenName;
-      
-      // Hide all main screens
-      document.getElementById('screen-form').classList.add('hidden');
-      document.getElementById('screen-regulations').classList.add('hidden');
-      document.getElementById('screen-prisoners').classList.add('hidden');
-      document.getElementById('screen-ticket').classList.add('hidden');
-      document.getElementById('screen-admin').classList.add('hidden');
-      
-      // Show requested
-      document.getElementById('screen-' + screenName).classList.remove('hidden');
-      
-      // Re-create lucide icons for elements created dynamically
+    // ============================================================
+    // UI HELPERS
+    // ============================================================
+    function changeScreen(name) {
+      currentScreen = name;
+      ['form','regulations','prisoners','ticket','admin'].forEach(function(s) {
+        document.getElementById('screen-' + s).classList.add('hidden');
+      });
+      document.getElementById('screen-' + name).classList.remove('hidden');
       lucide.createIcons();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // HELPER: Loading Overlay
-    function showLoading(text, isVisible) {
-      const overlay = document.getElementById('loading-overlay');
-      const label = document.getElementById('loading-overlay-text');
-      if (isVisible) {
-        label.innerText = text;
+    function showLoading(text, visible) {
+      var overlay = document.getElementById('loading-overlay');
+      if (visible) {
+        document.getElementById('loading-overlay-text').textContent = text || 'Đang xử lý...';
         overlay.classList.remove('hidden');
       } else {
         overlay.classList.add('hidden');
       }
     }
 
-    // HELPER: Notification System
-    function showNotification(text, type = 'error') {
-      const box = document.getElementById('notification-box');
-      box.innerText = text;
-      box.className = "p-4 rounded-2xl text-xs font-semibold mb-5 text-center border ";
-      
-      if (type === 'success') {
-        box.className += "bg-green-50 text-green-800 border-green-100";
-      } else if (type === 'warning') {
-        box.className += "bg-amber-50 text-amber-800 border-amber-100";
-      } else {
-        box.className += "bg-red-50 text-red-800 border-red-100";
-      }
+    function showNotification(text, type) {
+      type = type || 'error';
+      var box = document.getElementById('notification-box');
+      box.textContent = text;
+      var styles = { success: "bg-green-50 text-green-800 border-green-100", warning: "bg-amber-50 text-amber-800 border-amber-100", error: "bg-red-50 text-red-800 border-red-100" };
+      box.className = "p-4 rounded-2xl text-xs font-semibold mb-5 text-center border " + (styles[type] || styles.error);
       box.classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function clearNotification() {
-      document.getElementById('notification-box').classList.add('hidden');
-    }
+    function clearNotification() { document.getElementById('notification-box').classList.add('hidden'); }
 
-    // Mask Date Input as DD-MM-YYYY
     function maskDateInput(input) {
-      let value = input.value.replace(/\D/g, "");
-      if (value.length > 8) value = value.slice(0, 8);
-
-      let formatted = "";
-      if (value.length > 0) {
-        formatted += value.slice(0, 2);
-        if (value.length > 2) {
-          formatted += "-" + value.slice(2, 4);
-          if (value.length > 4) {
-            formatted += "-" + value.slice(4, 8);
-          }
-        }
-      }
-      input.value = formatted;
+      var v = input.value.replace(/\D/g, '').slice(0, 8);
+      var out = '';
+      if (v.length > 0) out = v.slice(0, 2);
+      if (v.length > 2) out += '-' + v.slice(2, 4);
+      if (v.length > 4) out += '-' + v.slice(4, 8);
+      input.value = out;
     }
 
-    // Validate date format DD-MM-YYYY
-    function validateDate(dateStr) {
-      const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
-      if (!regex.test(dateStr)) return false;
-      const parts = dateStr.split("-");
-      const day = parseInt(parts[0], 10);
-      const month = parseInt(parts[1], 10);
-      const year = parseInt(parts[2], 10);
-
-      const currentYear = new Date().getFullYear();
-      if (year < 1900 || year > currentYear) return false;
-      if (month < 1 || month > 12) return false;
-
-      const daysInMonth = [
-        31,
-        year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28,
-        31,
-        30,
-        31,
-        30,
-        31,
-        31,
-        30,
-        31,
-        30,
-        31,
-      ];
-      if (day < 1 || day > daysInMonth[month - 1]) return false;
-      return true;
+    function validateDate(d) {
+      if (!/^\d{2}-\d{2}-\d{4}$/.test(d)) return false;
+      var parts = d.split('-');
+      var dd = parseInt(parts[0], 10), mm = parseInt(parts[1], 10), yyyy = parseInt(parts[2], 10);
+      if (yyyy < 1900 || yyyy > new Date().getFullYear()) return false;
+      if (mm < 1 || mm > 12) return false;
+      var isLeap = (yyyy % 4 === 0 && yyyy % 100 !== 0) || yyyy % 400 === 0;
+      var days = [31, isLeap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      return dd >= 1 && dd <= days[mm - 1];
     }
 
-    // Relationship select options generator
     function updateRelationships() {
-      const gender = document.getElementById('visitor-gender').value;
-      const relSelect = document.getElementById('visitor-relationship');
-      relSelect.innerHTML = '<option value="">Chọn mối quan hệ...</option>';
-      
-      let options = [];
-      if (gender === 'Nam') {
-        options = ["Cha", "Anh ruột", "Em ruột", "Con ruột", "Ông nội", "Ông ngoại"];
-      } else if (gender === 'Nữ') {
-        options = ["Mẹ", "Chị ruột", "Em ruột", "Con ruột", "Bà nội", "Bà ngoại"];
-      }
-      
-      options.forEach(opt => {
-        const el = document.createElement('option');
-        el.value = opt;
-        el.innerText = opt;
-        relSelect.appendChild(el);
+      var gender = document.getElementById('visitor-gender').value;
+      var sel = document.getElementById('visitor-relationship');
+      sel.innerHTML = '<option value="">Chọn mối quan hệ...</option>';
+      var opts = [];
+      if (gender === 'Nam') opts = ['Cha', 'Chồng', 'Anh ruột', 'Em ruột', 'Con ruột', 'Ông nội', 'Ông ngoại'];
+      else if (gender === 'Nữ') opts = ['Mẹ', 'Vợ', 'Chị ruột', 'Em ruột', 'Con ruột', 'Bà nội', 'Bà ngoại'];
+      opts.forEach(function(o) {
+        var el = document.createElement('option');
+        el.value = o; el.textContent = o;
+        sel.appendChild(el);
       });
     }
 
-    // Clear Selected Prisoner
     function clearSelectedPrisoner() {
       selectedPrisoner = null;
       document.getElementById('prisoner-badge').classList.add('hidden');
@@ -830,243 +606,149 @@
       document.getElementById('prisoner-address').value = '';
     }
 
-    // Fill Selected Prisoner details
     function selectPrisonerQuick(prisoner) {
       if (prisoner.status === 'disciplined') {
-        showNotification(`Không thể chọn: Can phạm nhân ${prisoner.name} đang bị kỷ luật dừng thăm gặp.`, 'error');
+        showNotification('Không thể chọn: ' + prisoner.name + ' đang bị kỷ luật dừng thăm gặp. Lý do: ' + (prisoner.reason || 'Không rõ'), 'error');
         return;
       }
       selectedPrisoner = prisoner;
-      
-      // Bộ lọc làm sạch ngày sinh: Cắt bỏ giờ, phút, giây nếu dữ liệu bị lỗi
-      let cleanDob = prisoner.dob;
-      if (cleanDob && (cleanDob.includes('T') || (cleanDob.includes('-') && cleanDob.length > 10))) {
-         const dateObj = new Date(cleanDob);
-         if (!isNaN(dateObj.getTime())) {
-             const day = String(dateObj.getDate()).padStart(2, '0');
-             const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-             const year = dateObj.getFullYear();
-             cleanDob = day + '-' + month + '-' + year;
-         }
+      // Làm sạch ngày sinh nếu bị lỗi định dạng ISO
+      var dob = prisoner.dob || '';
+      if (dob.indexOf('T') !== -1 || (dob.indexOf('-') !== -1 && dob.length > 10)) {
+        var dt = new Date(dob);
+        if (!isNaN(dt.getTime())) {
+          dob = String(dt.getDate()).padStart(2,'0') + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + dt.getFullYear();
+        }
       }
-
-      document.getElementById('prisoner-name').value = prisoner.name;
-      document.getElementById('prisoner-dob').value = cleanDob;
+      document.getElementById('prisoner-name').value    = prisoner.name;
+      document.getElementById('prisoner-dob').value     = dob;
       document.getElementById('prisoner-address').value = prisoner.address;
-      
       document.getElementById('prisoner-badge').classList.remove('hidden');
+      lucide.createIcons();
       changeScreen('form');
     }
 
-    // Fetch and Load Prisoners List
-    async function loadPrisoners() {
-      const loadBtnIcon = document.getElementById('btn-reload-prisoners-icon');
-      if (loadBtnIcon) loadBtnIcon.classList.add('animate-spin');
-      document.getElementById('prisoner-list-loading').classList.remove('hidden');
-      
-      try {
-        if (dbSettings.sheetUrl) {
-          // fetch from Google Sheets Web App API
-          const response = await fetch(`${dbSettings.sheetUrl}?action=getPrisoners`);
-          if (response.ok) {
-            const data = await response.json();
-            if (data.result === 'success') {
-              dbPrisoners = data.data;
-              localStorage.setItem('tg1_prisoners', JSON.stringify(dbPrisoners));
-            }
-          }
-        }
-      } catch (err) {
-        console.warn("Failed fetching sheet prisoners, fallback to cache.", err);
-      } finally {
-        if (loadBtnIcon) loadBtnIcon.classList.remove('animate-spin');
-        document.getElementById('prisoner-list-loading').classList.add('hidden');
-        renderPrisonerList(dbPrisoners);
-      }
-    }
-
-    // Render Prisoners
+    // ============================================================
+    // PRISONER LIST (PUBLIC)
+    // ============================================================
     function renderPrisonerList(list) {
-      const container = document.getElementById('prisoner-list-container');
+      var container = document.getElementById('prisoner-list-container');
       container.innerHTML = '';
-      
-      if (list.length === 0) {
+      if (!list || list.length === 0) {
         container.innerHTML = '<div class="p-8 text-center text-slate-400 text-xs font-medium">Không có can phạm nhân nào trùng khớp.</div>';
         return;
       }
-      
-      list.forEach(p => {
-        const item = document.createElement('div');
-        item.onclick = () => selectPrisonerQuick(p);
-        item.className = "p-3.5 flex items-center justify-between transition-colors border-b border-slate-100 last:border-none hover:bg-emerald-50/50 cursor-pointer text-left";
-        
-        let statusBadge = p.status === 'active' 
-          ? `<span class="inline-flex items-center gap-1 bg-green-50 text-green-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-100"><i data-lucide="check-circle" class="w-3 h-3"></i> Được gặp</span>`
-          : `<span class="inline-flex items-center gap-1 bg-red-50 text-red-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-100" title="${p.reason}"><i data-lucide="alert-triangle" class="w-3 h-3"></i> Kỷ luật</span>`;
-          
-        item.innerHTML = `
-          <div class="space-y-0.5">
-            <p class="font-bold text-slate-800 text-xs tracking-wide uppercase">${p.name}</p>
-            <div class="flex items-center gap-1 text-[10px] text-slate-500">
-              <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i>
-              <span>Ngày sinh: ${p.dob}</span>
-            </div>
-          </div>
-          <div class="text-right">${statusBadge}</div>
-        `;
+      list.forEach(function(p) {
+        var item = document.createElement('div');
+        item.onclick = function() { selectPrisonerQuick(p); };
+        item.className = "p-3.5 flex items-center justify-between transition-colors border-b border-slate-100 last:border-none hover:bg-emerald-50/50 cursor-pointer";
+        var badge = p.status === 'active'
+          ? '<span class="inline-flex items-center gap-1 bg-green-50 text-green-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-100"><i data-lucide="check-circle" class="w-3 h-3"></i> Được gặp</span>'
+          : '<span class="inline-flex items-center gap-1 bg-red-50 text-red-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-100" title="' + (p.reason||'') + '"><i data-lucide="alert-triangle" class="w-3 h-3"></i> Kỷ luật</span>';
+        item.innerHTML = '<div class="space-y-0.5"><p class="font-bold text-slate-800 text-xs tracking-wide uppercase">' + p.name + '</p><div class="flex items-center gap-1 text-[10px] text-slate-500"><i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i><span>Ngày sinh: ' + p.dob + '</span></div></div><div class="text-right">' + badge + '</div>';
         container.appendChild(item);
       });
       lucide.createIcons();
     }
 
-    // Local Search filtering of prisoner list
     function filterPrisonerList() {
-      const term = document.getElementById('prisoner-search-input').value.toLowerCase();
-      const filtered = dbPrisoners.filter(p => p.name.toLowerCase().includes(term) || p.dob.includes(term));
-      renderPrisonerList(filtered);
+      var term = document.getElementById('prisoner-search-input').value.toLowerCase();
+      renderPrisonerList(dbPrisoners.filter(function(p) { return p.name.toLowerCase().indexOf(term) !== -1 || p.dob.indexOf(term) !== -1; }));
     }
 
-    // Handle Visitor Registration submit
-    async function handleRegistrationSubmit(event) {
+    // ============================================================
+    // REGISTRATION
+    // ============================================================
+    function handleRegistrationSubmit(event) {
       event.preventDefault();
       clearNotification();
-      
-      const vName = document.getElementById('visitor-name').value.trim();
-      const vGender = document.getElementById('visitor-gender').value;
-      const vDob = document.getElementById('visitor-dob').value;
-      const vRel = document.getElementById('visitor-relationship').value;
-      const vCccd = document.getElementById('visitor-cccd').value.trim();
-      const vPhone = document.getElementById('visitor-phone').value.trim();
-      
-      const pName = document.getElementById('prisoner-name').value.toUpperCase().trim();
-      const pDob = document.getElementById('prisoner-dob').value;
-      const pAddress = document.getElementById('prisoner-address').value.trim();
 
-      // VALIDATIONS
-      const lettersRegex = /^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặeèéẻẽẹêềếểễệiìíỉĩịoòóỏõọôồốổỗộơờớởỡợuùúủũụưừứửữựyỳýỷỹỵđĐÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/;
-      if (!lettersRegex.test(vName) || !lettersRegex.test(pName)) {
-        showNotification("Họ và tên bắt buộc phải là ký tự chữ tiếng Việt hợp lệ!");
+      var vName    = document.getElementById('visitor-name').value.trim().toUpperCase();
+      var vGender  = document.getElementById('visitor-gender').value;
+      var vDob     = document.getElementById('visitor-dob').value;
+      var vRel     = document.getElementById('visitor-relationship').value;
+      var vCccd    = document.getElementById('visitor-cccd').value.trim();
+      var vPhone   = document.getElementById('visitor-phone').value.replace(/\s+/g, '');
+      var pName    = document.getElementById('prisoner-name').value.trim().toUpperCase();
+      var pDob     = document.getElementById('prisoner-dob').value;
+      var pAddress = document.getElementById('prisoner-address').value.trim();
+
+      // Validation: tên chỉ chứa chữ tiếng Việt và khoảng trắng
+      var letterRx = /^[a-zA-ZÀ-ỹĐđ\s]+$/u;
+      if (!letterRx.test(vName) || !letterRx.test(pName)) {
+        showNotification('Họ và tên phải là ký tự chữ tiếng Việt hợp lệ, không chứa số hoặc ký tự đặc biệt!');
         return;
       }
-
       if (!/^\d{12}$/.test(vCccd)) {
-        showNotification("Số CCCD người thăm phải đúng định dạng 12 số nguyên liên tiếp!");
+        showNotification('Số CCCD phải đúng 12 chữ số liên tiếp!');
+        return;
+      }
+      if (!/^(03|05|07|08|09)\d{8}$/.test(vPhone)) {
+        showNotification('Số điện thoại không hợp lệ (10 số Việt Nam, bắt đầu 03/05/07/08/09)!');
+        return;
+      }
+      if (!validateDate(vDob)) {
+        showNotification('Ngày sinh người thăm không hợp lệ (DD-MM-YYYY)!');
+        return;
+      }
+      if (!validateDate(pDob)) {
+        showNotification('Ngày sinh can phạm không hợp lệ (DD-MM-YYYY)!');
         return;
       }
 
-      const normalizedPhone = vPhone.replace(/\s+/g, "");
-      if (!/^(03|05|07|08|09)\d{8}$/.test(normalizedPhone)) {
-        showNotification("Số điện thoại không hợp lệ (10 chữ số Việt Nam, bắt đầu bằng 03/05/07/08/09)!");
-        return;
-      }
-
-      if (!validateDate(vDob) || !validateDate(pDob)) {
-        showNotification("Định dạng Ngày Sinh không hợp lệ (DD-MM-YYYY)!");
-        return;
-      }
-
-      showLoading("Đang đối soát kiểm tra và đồng bộ số thứ tự...", true);
+      showLoading('Đang đối soát và cấp số thứ tự...', true);
 
       try {
-        // [CẬP NHẬT MỚI] ĐỒNG BỘ STT THỜI GIAN THỰC TỪ MÁY CHỦ
-        // Tải danh sách lượt đăng ký mới nhất từ đám mây (của thiết bị khác) trước khi cấp số
-        if (dbSettings.sheetUrl) {
-          try {
-            const syncRes = await fetch(`${dbSettings.sheetUrl}?action=getVisits`);
-            if (syncRes.ok) {
-              const syncData = await syncRes.json();
-              if (syncData.result === 'success') {
-                dbVisits = syncData.data; // Cập nhật dbVisits cục bộ thành dữ liệu mới nhất
-                localStorage.setItem('tg1_visits', JSON.stringify(dbVisits));
-              }
-            }
-          } catch(syncError) {
-             console.warn("Không thể đồng bộ để lấy max STT mới nhất, dùng dữ liệu cục bộ.", syncError);
-          }
-        }
+        var todayDate = dbSettings.visitDate;
 
-        let isDisciplined = false;
-        let isFound = true;
-        let reason = "";
-
-        // Check against active prisoner table
-        const matchingPrisoner = dbPrisoners.find(p => p.name.toUpperCase() === pName && p.dob === pDob);
-        if (matchingPrisoner) {
-          if (matchingPrisoner.status === 'disciplined') {
-            isDisciplined = true;
-            reason = matchingPrisoner.reason || "Đang thi hành hình phạt kỷ luật buồng giam.";
-          }
-        } else {
-          // If not in database and we are in safe/strict mode (non-sheet defaults to allowing with warning)
-          if (dbSettings.sheetUrl) {
-            // Check Google Apps Script live gateway
-            const queryUrl = `${dbSettings.sheetUrl}?action=checkVisit&name=${encodeURIComponent(pName)}&dob=${pDob}`;
-            const checkRes = await fetch(queryUrl);
-            if (checkRes.ok) {
-              const resData = await checkRes.json();
-              if (resData.result === 'disciplined') {
-                isDisciplined = true;
-                reason = resData.reason || "Kỷ luật dừng thăm gặp.";
-              } else if (resData.result === 'not_found') {
-                isFound = false;
-              }
-            }
-          }
-        }
-
-        if (isDisciplined) {
-          showNotification(`Cảnh báo: Can phạm nhân đang bị kỷ luật dừng thăm gặp đợt này! (${reason})`, 'error');
-          showLoading("", false);
+        // Kiểm tra kỷ luật
+        var matched = dbPrisoners.filter(function(p) { return p.name === pName && p.dob === pDob; })[0];
+        if (matched && matched.status === 'disciplined') {
+          showNotification('Cảnh báo: Can phạm nhân đang bị kỷ luật dừng thăm gặp! Lý do: ' + (matched.reason || 'Không rõ'), 'error');
+          showLoading('', false);
           return;
         }
 
-        const todayDate = dbSettings.visitDate;
-
-        // 1. Kiểm tra trùng lặp CCCD
-        const duplicateCccd = dbVisits.find(v => v.date === todayDate && v.status !== 'cancelled' && v.visitorCccd === vCccd);
-        if (duplicateCccd) {
-          showNotification(`Cảnh báo: Số CCCD (${vCccd}) đã được đăng ký thăm gặp trong ngày hôm nay!`, 'error');
-          showLoading("", false);
+        // Trùng CCCD
+        var dupCccd = dbVisits.filter(function(v) { return v.date === todayDate && v.status !== 'cancelled' && v.visitorCccd === vCccd; })[0];
+        if (dupCccd) {
+          showNotification('Số CCCD (' + vCccd + ') đã đăng ký thăm gặp trong ngày hôm nay!', 'error');
+          showLoading('', false);
+          return;
+        }
+        // Trùng SĐT
+        var dupPhone = dbVisits.filter(function(v) { return v.date === todayDate && v.status !== 'cancelled' && v.visitorPhone === vPhone; })[0];
+        if (dupPhone) {
+          showNotification('Số điện thoại (' + vPhone + ') đã đăng ký thăm gặp trong ngày hôm nay!', 'error');
+          showLoading('', false);
+          return;
+        }
+        // Trùng can phạm
+        var dupPrisoner = dbVisits.filter(function(v) { return v.date === todayDate && v.status !== 'cancelled' && v.prisonerName === pName; })[0];
+        if (dupPrisoner) {
+          showNotification('Can phạm nhân (' + pName + ') đã có thân nhân đăng ký thăm gặp đợt này! Mỗi can phạm chỉ được 1 lượt/ngày.', 'error');
+          showLoading('', false);
           return;
         }
 
-        // 2. Kiểm tra trùng lặp Số điện thoại
-        const duplicatePhone = dbVisits.find(v => v.date === todayDate && v.status !== 'cancelled' && v.visitorPhone === normalizedPhone);
-        if (duplicatePhone) {
-          showNotification(`Cảnh báo: Số điện thoại (${normalizedPhone}) đã được đăng ký thăm gặp trong ngày hôm nay!`, 'error');
-          showLoading("", false);
-          return;
-        }
-
-        // 3. Kiểm tra: Mỗi can phạm chỉ được 1 người thăm/ngày
-        const duplicatePrisonerVisit = dbVisits.find(v => v.date === todayDate && v.status !== 'cancelled' && v.prisonerName === pName);
-        if (duplicatePrisonerVisit) {
-          showNotification(`Cảnh báo: Can phạm nhân (${pName}) đã có thân nhân đăng ký thăm gặp đợt này! Mỗi can phạm chỉ được 1 lượt thăm/ngày.`, 'error');
-          showLoading("", false);
-          return;
-        }
-
-        // 4. [SỬA LỖI STT] Tính số thứ tự tăng dần chính xác dựa trên danh sách đã được làm mới ở trên
-        let maxStt = 0;
-        dbVisits.forEach(v => {
+        // Tính STT
+        var maxStt = 0;
+        dbVisits.forEach(function(v) {
           if (v.date === todayDate) {
-            const currentStt = parseInt(v.stt, 10);
-            if (!isNaN(currentStt) && currentStt > maxStt) {
-              maxStt = currentStt;
-            }
+            var n = parseInt(v.stt, 10);
+            if (!isNaN(n) && n > maxStt) maxStt = n;
           }
         });
-        const finalStt = String(maxStt + 1).padStart(3, '0');
+        var finalStt = String(maxStt + 1).padStart(3, '0');
 
-        // Tạo hồ sơ thăm gặp với STT đã chốt
-        const newVisit = {
+        var newVisit = {
           id: 'v_' + Date.now(),
           stt: finalStt,
           visitorName: vName,
           visitorGender: vGender,
           visitorDob: vDob,
           visitorCccd: vCccd,
-          visitorPhone: normalizedPhone,
+          visitorPhone: vPhone,
           relationship: vRel,
           prisonerName: pName,
           prisonerDob: pDob,
@@ -1076,671 +758,415 @@
           timestamp: new Date().toISOString()
         };
 
-        if (dbSettings.sheetUrl) {
-          // Gửi dữ liệu chính thức lên Google Sheets kèm STT đã cấp
-          const response = await fetch(dbSettings.sheetUrl, {
-            method: 'POST',
-            body: JSON.stringify({
-              action: 'addVisit',
-              visit: newVisit
-            })
-          });
-          
-          if (response.ok) {
-            const resultData = await response.json();
-            if (resultData.result !== 'success') {
-              showNotification(resultData.message || "Không thể lưu dữ liệu lên đám mây!", "error");
-              showLoading("", false);
-              return;
-            }
-            // Dự phòng trường hợp Apps Script trên server chủ động trả về một STT ưu tiên để ngăn trùng lặp tuyệt đối
-            if (resultData.stt) {
-                newVisit.stt = String(resultData.stt).padStart(3, '0');
-            }
-          } else {
-            showNotification("Không thể kết nối với máy chủ Google Sheets!", "error");
-            showLoading("", false);
-            return;
-          }
-        }
-
-        // Lưu vào bộ nhớ cục bộ
         dbVisits.push(newVisit);
-        localStorage.setItem('tg1_visits', JSON.stringify(dbVisits));
+        saveVisits();
 
-        // Switch to ticket screen
         currentVisit = newVisit;
         showTicket(newVisit);
         changeScreen('ticket');
-        showNotification("Đã đối soát đối chiếu hợp lệ. Cổng gác duyệt cấp số thứ tự vào cổng!", 'success');
+        showNotification('Đã đối soát hợp lệ. Cổng gác duyệt cấp số thứ tự vào cổng!', 'success');
 
-      } catch (err) {
-        showNotification("Lỗi kết nối hoặc lỗi xử lý hệ thống cổng gác đám mây!");
+      } catch(err) {
         console.error(err);
+        showNotification('Lỗi xử lý hệ thống. Vui lòng thử lại! (' + err.message + ')');
       } finally {
-        showLoading("", false);
+        showLoading('', false);
       }
     }
 
-    // Render Ticket Screen Screen
+    // ============================================================
+    // TICKET
+    // ============================================================
     function showTicket(visit) {
-      document.getElementById('ticket-stt').innerText = visit.stt;
-      document.getElementById('ticket-visit-date').innerText = visit.date;
-      document.getElementById('ticket-visitor-name').innerText = visit.visitorName;
-      document.getElementById('ticket-relationship').innerText = visit.relationship;
-      document.getElementById('ticket-visitor-cccd').innerText = visit.visitorCccd;
-      document.getElementById('ticket-visitor-phone').innerText = visit.visitorPhone;
-      document.getElementById('ticket-prisoner-name').innerText = visit.prisonerName;
-      document.getElementById('ticket-prisoner-dob').innerText = visit.prisonerDob;
-      document.getElementById('ticket-prisoner-address').innerText = visit.prisonerAddress;
+      document.getElementById('ticket-stt').textContent           = visit.stt;
+      document.getElementById('ticket-visit-date').textContent    = visit.date;
+      document.getElementById('ticket-visitor-name').textContent  = visit.visitorName;
+      document.getElementById('ticket-relationship').textContent  = visit.relationship;
+      document.getElementById('ticket-visitor-cccd').textContent  = visit.visitorCccd;
+      document.getElementById('ticket-visitor-phone').textContent = visit.visitorPhone;
+      document.getElementById('ticket-prisoner-name').textContent = visit.prisonerName;
+      document.getElementById('ticket-prisoner-dob').textContent  = visit.prisonerDob;
+      document.getElementById('ticket-prisoner-address').textContent = visit.prisonerAddress;
 
-      // Generate visual QR code
-      const qrContainer = document.getElementById('ticket-qrcode-container');
+      var qrContainer = document.getElementById('ticket-qrcode-container');
       qrContainer.innerHTML = '';
-      
-      const qrData = `STT:${visit.stt}|CCCD:${visit.visitorCccd}|NAME:${visit.visitorName}|PRISONER:${visit.prisonerName}`;
-      
-      // Create QRCode canvas inside
-      const canvasEl = document.createElement('canvas');
-      qrContainer.appendChild(canvasEl);
-      
-      QRCode.toCanvas(canvasEl, qrData, {
-        width: 68,
-        margin: 1,
-        color: {
-          dark: "#1e1b4b",
-          light: "#ffffff"
-        }
-      });
+      var qrData = 'STT:' + visit.stt + '|CCCD:' + visit.visitorCccd + '|NAME:' + visit.visitorName + '|PRISONER:' + visit.prisonerName;
+      var canvas = document.createElement('canvas');
+      qrContainer.appendChild(canvas);
+      QRCode.toCanvas(canvas, qrData, { width: 68, margin: 1, color: { dark: '#1e1b4b', light: '#ffffff' } });
     }
 
-    // Download Ticket Canvas as Image
     function downloadTicketCanvas() {
-      showLoading("Đang xuất vé phân giải cao...", true);
-      
-      setTimeout(() => {
+      if (!currentVisit) return;
+      showLoading('Đang xuất ảnh vé...', true);
+      setTimeout(function() {
         try {
-          const canvas = document.getElementById('export-canvas');
-          const ctx = canvas.getContext("2d");
-          if (!ctx) return;
+          var canvas = document.getElementById('export-canvas');
+          var ctx = canvas.getContext('2d');
+          canvas.width = 800; canvas.height = 1100;
 
-          canvas.width = 800;
-          canvas.height = 1100;
+          // BG
+          ctx.fillStyle = '#f8fafc';
+          ctx.fillRect(0, 0, 800, 1100);
 
-          // Background
-          ctx.fillStyle = "#f8fafc";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          // Khung ngoài
+          ctx.strokeStyle = '#312e81'; ctx.lineWidth = 12;
+          ctx.strokeRect(15, 15, 770, 1070);
+          ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+          ctx.strokeRect(30, 30, 740, 1040);
 
-          // Deep Blue Border Frame
-          ctx.strokeStyle = "#312e81";
-          ctx.lineWidth = 12;
-          ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+          // Header đậm
+          ctx.fillStyle = '#1e1b4b';
+          ctx.fillRect(32, 32, 736, 215);
+          ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
+          ctx.font = 'bold 19px Arial, sans-serif';
+          ctx.fillText('BO CONG AN - CONG AN TINH TAY NINH', 400, 78);
+          ctx.font = 'bold 25px Arial, sans-serif';
+          ctx.fillText('TRAI TAM GIAM SO 1 - TAY NINH', 400, 116);
+          ctx.fillStyle = '#fbbf24';
+          ctx.font = 'bold 21px Arial, sans-serif';
+          ctx.fillText('VE DANG KY THAM GAP PHAM NHAN', 400, 158);
+          ctx.fillStyle = '#c7d2fe';
+          ctx.font = '13px Arial, sans-serif';
+          ctx.fillText('He thong khai bao noi bo - Phe duyet tu dong', 400, 200);
 
-          ctx.strokeStyle = "#cbd5e1";
-          ctx.lineWidth = 2;
-          ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
-
-          // Header Block
-          ctx.fillStyle = "#1e1b4b";
-          ctx.fillRect(32, 32, canvas.width - 64, 210);
-
-          ctx.fillStyle = "#ffffff";
-          ctx.font = "bold 20px sans-serif";
-          ctx.textAlign = "center";
-          ctx.fillText("BỘ CÔNG AN - CÔNG AN TỈNH TÂY NINH", canvas.width / 2, 75);
-
-          ctx.font = "bold 28px sans-serif";
-          ctx.fillText("TRẠI TẠM GIAM SỐ 1 - TÂY NINH", canvas.width / 2, 115);
-
-          ctx.fillStyle = "#fbbf24";
-          ctx.font = "bold 24px sans-serif";
-          ctx.fillText("VÉ ĐĂNG KÝ THĂM GẶP PHẠM NHÂN TỰ ĐỘNG", canvas.width / 2, 165);
-
-          ctx.fillStyle = "#e2e8f0";
-          ctx.font = "14px sans-serif";
-          ctx.fillText("Hệ thống khai báo đồng bộ • Phê duyệt trực tuyến tự động", canvas.width / 2, 200);
-
-          // STT Ticket Area
-          ctx.fillStyle = "#e0e7ff";
-          ctx.fillRect(250, 260, 300, 150);
-          ctx.strokeStyle = "#4338ca";
-          ctx.lineWidth = 3;
-          ctx.strokeRect(250, 260, 300, 150);
-
-          ctx.fillStyle = "#1e1b4b";
-          ctx.font = "bold 15px sans-serif";
-          ctx.fillText("SỐ THỨ TỰ VÀO CỔNG", canvas.width / 2, 295);
-
-          ctx.fillStyle = "#4338ca";
-          ctx.font = "bold 80px sans-serif";
-          ctx.fillText(currentVisit.stt, canvas.width / 2, 375);
-
-          // Perforation separator line
-          ctx.strokeStyle = "#cbd5e1";
-          ctx.lineWidth = 3;
-          ctx.setLineDash([12, 8]);
+          // STT box
+          ctx.fillStyle = '#e0e7ff';
           ctx.beginPath();
-          ctx.moveTo(50, 440);
-          ctx.lineTo(750, 440);
+          ctx.roundRect(240, 258, 320, 155, 14);
+          ctx.fill();
+          ctx.strokeStyle = '#4338ca'; ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.roundRect(240, 258, 320, 155, 14);
           ctx.stroke();
+          ctx.fillStyle = '#1e1b4b';
+          ctx.font = 'bold 14px Arial, sans-serif';
+          ctx.fillText('SO THU TU VAO CONG', 400, 295);
+          ctx.fillStyle = '#4338ca';
+          ctx.font = 'bold 82px Arial, sans-serif';
+          ctx.fillText(currentVisit.stt, 400, 385);
+
+          // Dashed line
+          ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+          ctx.setLineDash([10, 6]);
+          ctx.beginPath(); ctx.moveTo(50, 445); ctx.lineTo(750, 445); ctx.stroke();
           ctx.setLineDash([]);
 
-          // Details rendering
-          ctx.fillStyle = "#1e293b";
-          ctx.font = "bold 22px sans-serif";
-          ctx.textAlign = "left";
-          ctx.fillText("I. THÔNG TIN THÂN NHÂN ĐI THĂM", 70, 490);
+          // Details
+          ctx.textAlign = 'left';
+          var y = 490;
 
-          ctx.font = "18px sans-serif";
-          ctx.fillStyle = "#475569";
-          ctx.fillText("Họ tên người thăm:", 70, 530);
-          ctx.fillStyle = "#0f172a";
-          ctx.font = "bold 18px sans-serif";
-          ctx.fillText(currentVisit.visitorName, 260, 530);
-
-          ctx.fillStyle = "#475569";
-          ctx.font = "18px sans-serif";
-          ctx.fillText("Số CCCD (12 số):", 70, 565);
-          ctx.fillStyle = "#0f172a";
-          ctx.font = "bold 18px sans-serif";
-          ctx.fillText(currentVisit.visitorCccd, 260, 565);
-
-          ctx.font = "18px sans-serif";
-          ctx.fillStyle = "#475569";
-          ctx.fillText("Mối quan hệ:", 70, 600);
-          ctx.fillStyle = "#4338ca";
-          ctx.font = "bold 18px sans-serif";
-          ctx.fillText(currentVisit.relationship, 260, 600);
-
-          ctx.font = "18px sans-serif";
-          ctx.fillStyle = "#475569";
-          ctx.fillText("Điện thoại liên hệ:", 70, 635);
-          ctx.fillStyle = "#0f172a";
-          ctx.fillText(currentVisit.visitorPhone, 260, 635);
-
-          ctx.strokeStyle = "#e2e8f0";
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.moveTo(70, 670);
-          ctx.lineTo(730, 670);
-          ctx.stroke();
-
-          // Prisoner info block on bottom canvas
-          ctx.fillStyle = "#1e293b";
-          ctx.font = "bold 22px sans-serif";
-          ctx.fillText("II. THÔNG TIN CAN PHẠM NHÂN", 70, 710);
-
-          ctx.font = "18px sans-serif";
-          ctx.fillStyle = "#475569";
-          ctx.fillText("Họ tên can phạm:", 70, 750);
-          ctx.fillStyle = "#0f172a";
-          ctx.font = "bold 18px sans-serif";
-          ctx.fillText(currentVisit.prisonerName, 260, 750);
-
-          ctx.fillStyle = "#475569";
-          ctx.font = "18px sans-serif";
-          ctx.fillText("Ngày sinh:", 70, 785);
-          ctx.fillStyle = "#0f172a";
-          ctx.fillText(currentVisit.prisonerDob, 260, 785);
-
-          ctx.fillStyle = "#475569";
-          ctx.fillText("Hộ khẩu thường trú:", 70, 820);
-          ctx.fillStyle = "#0f172a";
-          ctx.fillText(currentVisit.prisonerAddress, 260, 820);
-
-          ctx.strokeStyle = "#e2e8f0";
-          ctx.beginPath();
-          ctx.moveTo(70, 855);
-          ctx.lineTo(730, 855);
-          ctx.stroke();
-
-          // Sync Date
-          ctx.fillStyle = "#15803d";
-          ctx.fillRect(70, 880, 660, 60);
-          ctx.fillStyle = "#ffffff";
-          ctx.font = "bold 16px sans-serif";
-          ctx.textAlign = "center";
-          ctx.fillText(`LƯỢT THĂM HỢP LỆ VÀO NGÀY: ${currentVisit.date}`, canvas.width / 2, 915);
-
-          // Verification signature bottom
-          ctx.fillStyle = "#64748b";
-          ctx.font = "italic 13px sans-serif";
-          ctx.textAlign = "left";
-          ctx.fillText("Trại Tạm Giam Số 1 Công An Tây Ninh • Hệ Thống Tự Động Hóa", 70, 975);
-
-          // Draw QR on final high-res canvas
-          const qrCanvas = document.querySelector('#ticket-qrcode-container canvas');
-          if (qrCanvas) {
-            ctx.drawImage(qrCanvas, 620, 950, 110, 110);
+          function drawSection(title) {
+            ctx.fillStyle = '#1e1b4b'; ctx.font = 'bold 20px Arial, sans-serif';
+            ctx.fillText(title, 70, y); y += 42;
+          }
+          function drawRow(label, value) {
+            ctx.fillStyle = '#64748b'; ctx.font = '16px Arial, sans-serif';
+            ctx.fillText(label, 70, y);
+            ctx.fillStyle = '#0f172a'; ctx.font = 'bold 16px Arial, sans-serif';
+            ctx.fillText(value || '', 265, y);
+            y += 36;
           }
 
-          // Trigger image download
-          const link = document.createElement('a');
-          link.download = `STT_${currentVisit.stt}_${currentVisit.visitorCccd}.png`;
-          link.href = canvas.toDataURL("image/png");
+          drawSection('I. THAN NHAN DI THAM');
+          drawRow('Ho ten nguoi tham:', currentVisit.visitorName);
+          drawRow('So CCCD (12 so):', currentVisit.visitorCccd);
+          drawRow('Moi quan he:', currentVisit.relationship);
+          drawRow('Dien thoai lien he:', currentVisit.visitorPhone);
+
+          drawSection('II. THONG TIN CAN PHAM NHAN');
+          drawRow('Ho ten can pham:', currentVisit.prisonerName);
+          drawRow('Ngay sinh:', currentVisit.prisonerDob);
+          drawRow('Ho khau thuong tru:', currentVisit.prisonerAddress);
+
+          // Banner ngày gặp
+          ctx.fillStyle = '#15803d';
+          ctx.beginPath();
+          ctx.roundRect(70, y + 10, 660, 58, 10);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff'; ctx.font = 'bold 16px Arial, sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText('LUOT THAM HOP LE VAO NGAY: ' + currentVisit.date, 400, y + 47);
+
+          // Footer
+          ctx.fillStyle = '#94a3b8'; ctx.font = 'italic 12px Arial, sans-serif'; ctx.textAlign = 'left';
+          ctx.fillText('Trai Tam Giam So 1 Cong An Tinh Tay Ninh - He Thong Noi Bo', 70, 990);
+
+          // QR code
+          var qrEl = document.querySelector('#ticket-qrcode-container canvas');
+          if (qrEl) ctx.drawImage(qrEl, 625, 952, 112, 112);
+
+          var link = document.createElement('a');
+          link.download = 'STT_' + currentVisit.stt + '_' + currentVisit.visitorCccd + '.png';
+          link.href = canvas.toDataURL('image/png');
           link.click();
-        } catch (err) {
+        } catch(err) {
           console.error(err);
+          alert('Lỗi khi xuất ảnh: ' + err.message);
         } finally {
-          showLoading("", false);
+          showLoading('', false);
         }
       }, 500);
     }
 
-    // Reset registration to start new visitor process
     function resetRegistration() {
       currentVisit = null;
       selectedPrisoner = null;
       document.getElementById('registration-form').reset();
+      document.getElementById('visitor-gender').value = '';
+      document.getElementById('visitor-relationship').innerHTML = '<option value="">Chọn giới tính trước...</option>';
       document.getElementById('prisoner-badge').classList.add('hidden');
       clearNotification();
       changeScreen('form');
     }
 
-    // ==============================================
-    // STAFF AREA & CONTROL PANEL LOGIN
-    // ==============================================
+    // ============================================================
+    // ADMIN — AUTH
+    // ============================================================
     function openPinModal() {
       document.getElementById('pin-error').classList.add('hidden');
       document.getElementById('pin-input').value = '';
       document.getElementById('pin-modal').classList.remove('hidden');
+      lucide.createIcons();
+      setTimeout(function() { document.getElementById('pin-input').focus(); }, 120);
     }
-
-    function closePinModal() {
-      document.getElementById('pin-modal').classList.add('hidden');
-    }
+    function closePinModal() { document.getElementById('pin-modal').classList.add('hidden'); }
 
     function handlePinSubmit(event) {
       event.preventDefault();
-      const pin = document.getElementById('pin-input').value;
+      var pin = document.getElementById('pin-input').value;
       if (pin === dbSettings.pinCode) {
         closePinModal();
         changeScreen('admin');
-        loadAdminVisits();
-        loadAdminPrisoners();
+        changeAdminTab('queue');
+        renderAdminVisits(dbVisits);
+        renderAdminPrisoners(dbPrisoners);
       } else {
-        const errorEl = document.getElementById('pin-error');
-        errorEl.innerText = "Mã PIN không khớp! Thử lại hoặc dùng mặc định '113'.";
-        errorEl.classList.remove('hidden');
+        var err = document.getElementById('pin-error');
+        err.textContent = 'Mã PIN không khớp! Vui lòng thử lại.';
+        err.classList.remove('hidden');
+        document.getElementById('pin-input').value = '';
+        document.getElementById('pin-input').focus();
       }
     }
+    function logoutAdmin() { changeScreen('form'); }
 
-    function logoutAdmin() {
-      changeScreen('form');
-    }
-
-    // Change Administrator Screen Tab
-    function changeAdminTab(tabName) {
-      currentAdminTab = tabName;
-      
-      // Update Tab button classes
-      document.getElementById('tab-btn-queue').className = tabName === 'queue' ? 'py-1.5 text-center text-xs font-black rounded-lg bg-indigo-600 text-white cursor-pointer' : 'py-1.5 text-center text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 cursor-pointer';
-      document.getElementById('tab-btn-prisoners').className = tabName === 'prisoners' ? 'py-1.5 text-center text-xs font-black rounded-lg bg-indigo-600 text-white cursor-pointer' : 'py-1.5 text-center text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 cursor-pointer';
-      document.getElementById('tab-btn-settings').className = tabName === 'settings' ? 'py-1.5 text-center text-xs font-black rounded-lg bg-indigo-600 text-white cursor-pointer' : 'py-1.5 text-center text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 cursor-pointer';
-
-      // Update content visibilities
-      document.getElementById('admin-tab-queue').classList.add('hidden');
-      document.getElementById('admin-tab-prisoners').classList.add('hidden');
-      document.getElementById('admin-tab-settings').classList.add('hidden');
-
-      document.getElementById('admin-tab-' + tabName).classList.remove('hidden');
+    // ============================================================
+    // ADMIN — TABS
+    // ============================================================
+    function changeAdminTab(name) {
+      currentAdminTab = name;
+      ['queue','prisoners','settings'].forEach(function(t) {
+        var btn   = document.getElementById('tab-btn-' + t);
+        var panel = document.getElementById('admin-tab-' + t);
+        if (t === name) {
+          btn.className = 'py-1.5 text-center text-xs font-black rounded-lg bg-indigo-600 text-white cursor-pointer';
+          panel.classList.remove('hidden');
+        } else {
+          btn.className = 'py-1.5 text-center text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 cursor-pointer';
+          panel.classList.add('hidden');
+        }
+      });
       lucide.createIcons();
     }
 
-    // Load admin panel visits list
-    async function loadAdminVisits() {
-      const icon = document.getElementById('btn-reload-queue-icon');
-      if (icon) icon.classList.add('animate-spin');
-      document.getElementById('queue-list-loading').classList.remove('hidden');
-
-      try {
-        if (dbSettings.sheetUrl) {
-          const res = await fetch(`${dbSettings.sheetUrl}?action=getVisits`);
-          if (res.ok) {
-            const data = await res.json();
-            if (data.result === 'success') {
-              dbVisits = data.data;
-              localStorage.setItem('tg1_visits', JSON.stringify(dbVisits));
-            }
-          }
-        }
-      } catch (err) {
-        console.warn("Failed fetching sheet visits, using cache.", err);
-      } finally {
-        if (icon) icon.classList.remove('animate-spin');
-        document.getElementById('queue-list-loading').classList.add('hidden');
-        renderAdminVisits(dbVisits);
-      }
-    }
-
-    // Render admin visits table
+    // ============================================================
+    // ADMIN — VISITS
+    // ============================================================
     function renderAdminVisits(visits) {
-      const container = document.getElementById('queue-list-container');
+      var container = document.getElementById('queue-list-container');
       container.innerHTML = '';
-
-      if (visits.length === 0) {
-        container.innerHTML = '<div class="py-12 text-center text-slate-400 text-xs font-medium">Chưa có lượt đăng ký thăm gặp nào được ghi nhận.</div>';
+      if (!visits || visits.length === 0) {
+        container.innerHTML = '<div class="py-12 text-center text-slate-400 text-xs font-medium">Chưa có lượt đăng ký thăm gặp nào.</div>';
         return;
       }
-
-      // Sort visits descending by timestamp
-      const sorted = [...visits].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-      sorted.forEach(v => {
-        const div = document.createElement('div');
-        div.className = "p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] leading-relaxed relative space-y-2";
-        
-        let statusBadge = '';
-        if (v.status === 'checked_in') {
-          statusBadge = '<span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">Đã vào</span>';
-        } else if (v.status === 'cancelled') {
-          statusBadge = '<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-full font-bold">Đã hủy</span>';
-        } else {
-          statusBadge = '<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">Chờ cổng</span>';
-        }
-
-        let actions = '';
+      var sorted = visits.slice().sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });
+      sorted.forEach(function(v) {
+        var div = document.createElement('div');
+        div.className = 'p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] leading-relaxed space-y-2';
+        var badges = { checked_in: '<span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">Đã vào</span>', cancelled: '<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-full font-bold">Đã hủy</span>', pending: '<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">Chờ cổng</span>' };
+        var statusBadge = badges[v.status] || badges.pending;
+        var actions = '';
         if (v.status === 'pending') {
-          actions = `
-            <button onclick="checkInVisit('${v.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-1 rounded cursor-pointer">Cho Vào</button>
-            <button onclick="cancelVisit('${v.id}')" class="bg-red-500 hover:bg-red-600 text-white font-bold px-2 py-1 rounded cursor-pointer">Hủy Lượt</button>
-          `;
+          actions += '<button onclick="checkInVisit(\'' + v.id + '\')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-1 rounded cursor-pointer text-[10px]">Cho Vào</button> ';
+          actions += '<button onclick="cancelVisit(\'' + v.id + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold px-2 py-1 rounded cursor-pointer text-[10px]">Hủy Lượt</button> ';
         }
-        actions += ` <button onclick="deleteVisit('${v.id}')" class="text-red-600 hover:bg-red-50 p-1 rounded cursor-pointer" title="Xóa hồ sơ"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>`;
-
-        div.innerHTML = `
-          <div class="flex justify-between items-center border-b border-slate-200 pb-1.5">
-            <div>
-              <span class="bg-indigo-600 text-white font-black px-2 py-0.5 rounded-lg text-xs mr-1">${v.stt}</span>
-              <b>${v.visitorName}</b> (${v.relationship})
-            </div>
-            <div>${statusBadge}</div>
-          </div>
-          <div class="grid grid-cols-2 gap-1 text-slate-500">
-            <div>• CCCD: <b>${v.visitorCccd}</b></div>
-            <div>• ĐT: <b>${v.visitorPhone}</b></div>
-            <div class="col-span-2 bg-emerald-50 text-emerald-800 px-2 py-1 rounded border border-emerald-100/60 mt-1">
-              • Gặp Can Phạm: <b>${v.prisonerName}</b> (${v.prisonerDob})
-            </div>
-          </div>
-          <div class="flex justify-between items-center pt-1.5 border-t border-slate-100">
-            <span class="text-[9px] text-slate-400">Ngày gặp: ${v.date}</span>
-            <div class="flex gap-1.5 items-center">${actions}</div>
-          </div>
-        `;
+        actions += '<button onclick="deleteVisit(\'' + v.id + '\')" class="text-red-600 hover:bg-red-50 p-1 rounded cursor-pointer" title="Xóa hồ sơ"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>';
+        div.innerHTML =
+          '<div class="flex justify-between items-center border-b border-slate-200 pb-1.5">' +
+            '<div><span class="bg-indigo-600 text-white font-black px-2 py-0.5 rounded-lg text-xs mr-1">' + v.stt + '</span><b>' + v.visitorName + '</b> (' + v.relationship + ')</div>' +
+            '<div>' + statusBadge + '</div>' +
+          '</div>' +
+          '<div class="grid grid-cols-2 gap-1 text-slate-500">' +
+            '<div>• CCCD: <b>' + v.visitorCccd + '</b></div>' +
+            '<div>• ĐT: <b>' + v.visitorPhone + '</b></div>' +
+            '<div class="col-span-2 bg-emerald-50 text-emerald-800 px-2 py-1 rounded border border-emerald-100/60 mt-1">• Gặp Can Phạm: <b>' + v.prisonerName + '</b> (' + v.prisonerDob + ')</div>' +
+          '</div>' +
+          '<div class="flex justify-between items-center pt-1.5 border-t border-slate-100">' +
+            '<span class="text-[9px] text-slate-400">Ngày gặp: ' + v.date + '</span>' +
+            '<div class="flex gap-1.5 items-center">' + actions + '</div>' +
+          '</div>';
         container.appendChild(div);
       });
       lucide.createIcons();
     }
 
     function filterVisits() {
-      const term = document.getElementById('queue-search-input').value.toLowerCase();
-      const filtered = dbVisits.filter(v => 
-        v.visitorName.toLowerCase().includes(term) || 
-        v.visitorCccd.includes(term) || 
-        v.prisonerName.toLowerCase().includes(term)
-      );
-      renderAdminVisits(filtered);
+      var term = document.getElementById('queue-search-input').value.toLowerCase();
+      renderAdminVisits(dbVisits.filter(function(v) {
+        return v.visitorName.toLowerCase().indexOf(term) !== -1 ||
+               v.visitorCccd.indexOf(term) !== -1 ||
+               v.prisonerName.toLowerCase().indexOf(term) !== -1;
+      }));
     }
 
-    // Actions on visits
-    async function checkInVisit(id) {
-      const visit = dbVisits.find(v => v.id === id);
-      if (!visit) return;
-      
-      showLoading("Đang xử lý cho vào...", true);
-      visit.status = 'checked_in';
-      
-      try {
-        if (dbSettings.sheetUrl) {
-          await fetch(dbSettings.sheetUrl, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'checkIn', id: id })
-          });
-        }
-      } catch (e) { console.error(e); }
-      
-      localStorage.setItem('tg1_visits', JSON.stringify(dbVisits));
-      showLoading("", false);
+    function checkInVisit(id) {
+      var v = dbVisits.filter(function(x) { return x.id === id; })[0];
+      if (!v) return;
+      v.status = 'checked_in';
+      saveVisits();
       renderAdminVisits(dbVisits);
     }
 
-    async function cancelVisit(id) {
-      const visit = dbVisits.find(v => v.id === id);
-      if (!visit) return;
-      
-      showLoading("Đang hủy lượt đăng ký...", true);
-      visit.status = 'cancelled';
-      
-      try {
-        if (dbSettings.sheetUrl) {
-          await fetch(dbSettings.sheetUrl, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'cancelVisit', id: id })
-          });
-        }
-      } catch (e) { console.error(e); }
-      
-      localStorage.setItem('tg1_visits', JSON.stringify(dbVisits));
-      showLoading("", false);
+    function cancelVisit(id) {
+      var v = dbVisits.filter(function(x) { return x.id === id; })[0];
+      if (!v) return;
+      v.status = 'cancelled';
+      saveVisits();
       renderAdminVisits(dbVisits);
     }
 
-    async function deleteVisit(id) {
-      if (!confirm("Bạn có chắc chắn muốn xóa vĩnh viễn hồ sơ đăng ký này?")) return;
-      showLoading("Đang xóa hồ sơ...", true);
-      
-      try {
-        if (dbSettings.sheetUrl) {
-          await fetch(dbSettings.sheetUrl, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'deleteVisit', id: id })
-          });
-        }
-      } catch (e) { console.error(e); }
-      
-      dbVisits = dbVisits.filter(v => v.id !== id);
-      localStorage.setItem('tg1_visits', JSON.stringify(dbVisits));
-      showLoading("", false);
+    function deleteVisit(id) {
+      if (!confirm('Bạn có chắc muốn xóa vĩnh viễn hồ sơ này?')) return;
+      dbVisits = dbVisits.filter(function(x) { return x.id !== id; });
+      saveVisits();
       renderAdminVisits(dbVisits);
     }
 
-    // Admin Prisoner list logic
-    function loadAdminPrisoners() {
-      renderAdminPrisoners(dbPrisoners);
-    }
-
+    // ============================================================
+    // ADMIN — PRISONERS
+    // ============================================================
     function renderAdminPrisoners(list) {
-      const container = document.getElementById('admin-prisoners-list-container');
+      var container = document.getElementById('admin-prisoners-list-container');
       container.innerHTML = '';
-
-      if (list.length === 0) {
-        container.innerHTML = '<div class="py-8 text-center text-slate-400">Không có can phạm nhân nào.</div>';
+      if (!list || list.length === 0) {
+        container.innerHTML = '<div class="py-8 text-center text-slate-400 text-xs">Không có can phạm nhân nào.</div>';
         return;
       }
-
-      list.forEach(p => {
-        const div = document.createElement('div');
-        div.className = "p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center text-[11px] leading-relaxed";
-        
-        let statusBadge = p.status === 'active' 
-          ? '<span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">Được gặp</span>'
-          : `<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-full font-bold" title="${p.reason}">Kỷ luật</span>`;
-
-        div.innerHTML = `
-          <div>
-            <p class="font-extrabold text-slate-800 text-xs uppercase">${p.name}</p>
-            <p class="text-slate-500">Ngày sinh: ${p.dob} | Hộ khẩu: ${p.address}</p>
-            ${p.status === 'disciplined' ? `<p class="text-red-600 mt-1 font-semibold">• Lý do: ${p.reason}</p>` : ''}
-          </div>
-          <div class="flex items-center gap-2">
-            ${statusBadge}
-            <button onclick="openEditPrisonerModal('${p.id}')" class="text-indigo-600 hover:bg-indigo-50 p-1.5 rounded border border-indigo-100 cursor-pointer"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>
-            <button onclick="deletePrisoner('${p.id}')" class="text-red-600 hover:bg-red-50 p-1.5 rounded border border-red-100 cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
-          </div>
-        `;
+      list.forEach(function(p) {
+        var div = document.createElement('div');
+        div.className = 'p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-start text-[11px] leading-relaxed gap-2';
+        var badge = p.status === 'active'
+          ? '<span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">Được gặp</span>'
+          : '<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">Kỷ luật</span>';
+        div.innerHTML =
+          '<div class="flex-1 min-w-0">' +
+            '<p class="font-extrabold text-slate-800 text-xs uppercase">' + p.name + '</p>' +
+            '<p class="text-slate-500">Ngày sinh: ' + p.dob + ' | Hộ khẩu: ' + p.address + '</p>' +
+            (p.status === 'disciplined' ? '<p class="text-red-600 mt-0.5 font-semibold">• Lý do: ' + (p.reason||'') + '</p>' : '') +
+          '</div>' +
+          '<div class="flex items-center gap-1.5 shrink-0">' +
+            badge +
+            '<button onclick="openEditPrisonerModal(\'' + p.id + '\')" class="text-indigo-600 hover:bg-indigo-50 p-1.5 rounded border border-indigo-100 cursor-pointer"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>' +
+            '<button onclick="deletePrisoner(\'' + p.id + '\')" class="text-red-600 hover:bg-red-50 p-1.5 rounded border border-red-100 cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
+          '</div>';
         container.appendChild(div);
       });
       lucide.createIcons();
     }
 
     function filterAdminPrisoners() {
-      const term = document.getElementById('admin-prisoners-search-input').value.toLowerCase();
-      const filtered = dbPrisoners.filter(p => p.name.toLowerCase().includes(term) || p.dob.includes(term));
-      renderAdminPrisoners(filtered);
+      var term = document.getElementById('admin-prisoners-search-input').value.toLowerCase();
+      renderAdminPrisoners(dbPrisoners.filter(function(p) { return p.name.toLowerCase().indexOf(term) !== -1 || p.dob.indexOf(term) !== -1; }));
     }
 
-    // Prisoner Modal Open / Close
     function openAddPrisonerModal() {
-      document.getElementById('prisoner-modal-title').innerText = "Thêm Can Phạm Nhân Mới";
-      document.getElementById('modal-pris-id').value = '';
-      document.getElementById('modal-pris-name').value = '';
-      document.getElementById('modal-pris-dob').value = '';
+      document.getElementById('prisoner-modal-title').textContent = 'Thêm Can Phạm Nhân Mới';
+      document.getElementById('modal-pris-id').value      = '';
+      document.getElementById('modal-pris-name').value    = '';
+      document.getElementById('modal-pris-dob').value     = '';
       document.getElementById('modal-pris-address').value = '';
-      document.getElementById('modal-pris-status').value = 'active';
-      document.getElementById('modal-pris-reason').value = '';
-      
+      document.getElementById('modal-pris-status').value  = 'active';
+      document.getElementById('modal-pris-reason').value  = '';
       toggleDisciplineReason();
       document.getElementById('prisoner-modal').classList.remove('hidden');
     }
 
     function openEditPrisonerModal(id) {
-      const p = dbPrisoners.find(x => x.id === id);
+      var p = dbPrisoners.filter(function(x) { return x.id === id; })[0];
       if (!p) return;
-
-      document.getElementById('prisoner-modal-title').innerText = "Chỉnh Sửa Thông Tin Can Phạm";
-      document.getElementById('modal-pris-id').value = p.id;
-      document.getElementById('modal-pris-name').value = p.name;
-      document.getElementById('modal-pris-dob').value = p.dob;
+      document.getElementById('prisoner-modal-title').textContent = 'Chỉnh Sửa Thông Tin Can Phạm';
+      document.getElementById('modal-pris-id').value      = p.id;
+      document.getElementById('modal-pris-name').value    = p.name;
+      document.getElementById('modal-pris-dob').value     = p.dob;
       document.getElementById('modal-pris-address').value = p.address;
-      document.getElementById('modal-pris-status').value = p.status;
-      document.getElementById('modal-pris-reason').value = p.reason || '';
-
+      document.getElementById('modal-pris-status').value  = p.status;
+      document.getElementById('modal-pris-reason').value  = p.reason || '';
       toggleDisciplineReason();
       document.getElementById('prisoner-modal').classList.remove('hidden');
     }
 
-    function closePrisonerModal() {
-      document.getElementById('prisoner-modal').classList.add('hidden');
-    }
+    function closePrisonerModal() { document.getElementById('prisoner-modal').classList.add('hidden'); }
 
     function toggleDisciplineReason() {
-      const status = document.getElementById('modal-pris-status').value;
-      const rContainer = document.getElementById('modal-pris-reason-container');
-      if (status === 'disciplined') {
-        rContainer.classList.remove('hidden');
-      } else {
-        rContainer.classList.add('hidden');
-      }
+      var isDis = document.getElementById('modal-pris-status').value === 'disciplined';
+      document.getElementById('modal-pris-reason-container').classList.toggle('hidden', !isDis);
     }
 
-    async function handleSavePrisoner(event) {
+    function handleSavePrisoner(event) {
       event.preventDefault();
-      
-      const id = document.getElementById('modal-pris-id').value;
-      const name = document.getElementById('modal-pris-name').value.toUpperCase().trim();
-      const dob = document.getElementById('modal-pris-dob').value.trim();
-      const address = document.getElementById('modal-pris-address').value.trim();
-      const status = document.getElementById('modal-pris-status').value;
-      const reason = document.getElementById('modal-pris-reason').value.trim();
+      var id      = document.getElementById('modal-pris-id').value;
+      var name    = document.getElementById('modal-pris-name').value.toUpperCase().trim();
+      var dob     = document.getElementById('modal-pris-dob').value.trim();
+      var address = document.getElementById('modal-pris-address').value.trim();
+      var status  = document.getElementById('modal-pris-status').value;
+      var reason  = document.getElementById('modal-pris-reason').value.trim();
 
-      if (!validateDate(dob)) {
-        alert("Ngày sinh không hợp lệ (DD-MM-YYYY)!");
-        return;
-      }
+      if (!validateDate(dob)) { alert('Ngày sinh không hợp lệ (DD-MM-YYYY)!'); return; }
 
-      showLoading("Đang lưu can phạm...", true);
-
-      const payload = {
-        id: id || 'p_' + Date.now(),
-        name, dob, address, status, reason
-      };
-
-      try {
-        if (dbSettings.sheetUrl) {
-          const res = await fetch(dbSettings.sheetUrl, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'savePrisoner', prisoner: payload })
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.result === 'success') {
-              payload.id = data.id || payload.id;
-            }
-          }
-        }
-      } catch (e) { console.error(e); }
-
+      var payload = { id: id || ('p_' + Date.now()), name: name, dob: dob, address: address, status: status, reason: reason };
       if (id) {
-        dbPrisoners = dbPrisoners.map(x => x.id === id ? payload : x);
+        dbPrisoners = dbPrisoners.map(function(x) { return x.id === id ? payload : x; });
       } else {
         dbPrisoners.push(payload);
       }
-
-      localStorage.setItem('tg1_prisoners', JSON.stringify(dbPrisoners));
-      showLoading("", false);
+      savePrisoners();
       closePrisonerModal();
-      loadAdminPrisoners();
-      loadPrisoners(); // Sync to public screen
+      renderAdminPrisoners(dbPrisoners);
+      renderPrisonerList(dbPrisoners);
     }
 
-    async function deletePrisoner(id) {
-      if (!confirm("Xác nhận xóa vĩnh viễn hồ sơ can phạm nhân này khỏi hệ thống gác cổng?")) return;
-      showLoading("Đang xóa can phạm...", true);
-
-      try {
-        if (dbSettings.sheetUrl) {
-          await fetch(dbSettings.sheetUrl, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'deletePrisoner', id: id })
-          });
-        }
-      } catch (e) { console.error(e); }
-
-      dbPrisoners = dbPrisoners.filter(x => x.id !== id);
-      localStorage.setItem('tg1_prisoners', JSON.stringify(dbPrisoners));
-      showLoading("", false);
-      loadAdminPrisoners();
-      loadPrisoners(); // Sync to public screen
+    function deletePrisoner(id) {
+      if (!confirm('Xác nhận xóa vĩnh viễn hồ sơ can phạm nhân này?')) return;
+      dbPrisoners = dbPrisoners.filter(function(x) { return x.id !== id; });
+      savePrisoners();
+      renderAdminPrisoners(dbPrisoners);
+      renderPrisonerList(dbPrisoners);
     }
 
-    // Save System configuration
-    async function handleSaveSettings(event) {
+    // ============================================================
+    // ADMIN — SETTINGS
+    // ============================================================
+    function handleSaveSettings(event) {
       event.preventDefault();
-      
-      const vDate = document.getElementById('cfg-visit-date').value.trim();
-      const pin = document.getElementById('cfg-pin-code').value.trim();
-      const sUrl = document.getElementById('cfg-sheet-url').value.trim();
-
-      if (!validateDate(vDate)) {
-        alert("Ngày làm việc tiếp theo không hợp lệ (DD-MM-YYYY)!");
-        return;
-      }
-
-      showLoading("Đang áp dụng cấu hình hệ thống...", true);
-
+      var vDate = document.getElementById('cfg-visit-date').value.trim();
+      var pin   = document.getElementById('cfg-pin-code').value.trim();
+      if (!validateDate(vDate)) { alert('Ngày làm việc không hợp lệ (DD-MM-YYYY)!'); return; }
+      if (pin.length < 3) { alert('Mã PIN phải có ít nhất 3 ký tự!'); return; }
       dbSettings.visitDate = vDate;
-      dbSettings.pinCode = pin;
-      dbSettings.sheetUrl = sUrl;
-
-      try {
-        if (dbSettings.sheetUrl) {
-          await fetch(dbSettings.sheetUrl, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'saveSettings', settings: dbSettings })
-          });
-        }
-      } catch (e) { console.error(e); }
-
-      localStorage.setItem('tg1_settings', JSON.stringify(dbSettings));
-      
-      // Update local variables & labels
-      document.getElementById('lbl-visit-date').innerText = vDate;
-      document.getElementById('lbl-pin-default').innerText = pin;
-
-      showLoading("", false);
-      alert("Đã cập nhật lưu cấu hình hệ thống trực tuyến thành công!");
+      dbSettings.pinCode   = pin;
+      saveSettings();
+      document.getElementById('lbl-visit-date').textContent = vDate;
+      alert('Đã lưu cấu hình thành công!');
     }
+
+    // ============================================================
+    // BOOTSTRAP
+    // ============================================================
+    window.onload = function() {
+      initDatabase();
+      renderPrisonerList(dbPrisoners);
+      changeAdminTab('queue');
+    };
   </script>
 </body>
 </html>
