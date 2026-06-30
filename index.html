@@ -463,9 +463,8 @@
     // ============================================================
     // CẤU HÌNH GOOGLE SHEETS — Dán URL Web App Apps Script vào đây
     // ============================================================
-    var SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwMuMgF8gZ3HYgaqkoHJb7EDK74d-udcB1bDpa_XL3JRWj82WshzEeqfi97V1I1-C_3bw/exec"; // VD: https://script.google.com/macros/s/AKfycb.../exec
-
-   
+    var SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzb7zyTWsZnSvJamNRPMoSAeJ6PUOyzy8dXbw5Y64AlEWTqnLb1ct8bX7M8W1vo6257Qg/exec";
+  
     var SEED_SETTINGS = { visitDate: "30-06-2026", pinCode: "111" };
 
     // ============================================================
@@ -478,6 +477,33 @@
     var dbVisits = [];
     var dbPrisoners = [];
     var dbSettings = { visitDate: "30-06-2026", pinCode: "111" };
+
+    function parseDateToDDMMYYYY(dateStr) {
+      if (!dateStr) return '';
+      if (/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) {
+        return dateStr;
+      }
+      var clean = dateStr.split('T')[0];
+      var parts = clean.split('-');
+      if (parts.length === 3) {
+        if (parts[0].length === 4) {
+          return parts[2].padStart(2, '0') + '-' + parts[1].padStart(2, '0') + '-' + parts[0];
+        }
+        return parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0') + '-' + parts[2];
+      }
+      var partsSlash = clean.split('/');
+      if (partsSlash.length === 3) {
+        if (partsSlash[0].length === 4) {
+          return partsSlash[2].padStart(2, '0') + '-' + partsSlash[1].padStart(2, '0') + '-' + partsSlash[0];
+        }
+        return partsSlash[0].padStart(2, '0') + '-' + partsSlash[1].padStart(2, '0') + '-' + partsSlash[2];
+      }
+      return dateStr;
+    }
+
+    function isSameDate(date1, date2) {
+      return parseDateToDDMMYYYY(date1) === parseDateToDDMMYYYY(date2);
+    }
 
     // ============================================================
     // STORAGE HELPERS
@@ -569,6 +595,7 @@
       document.getElementById('cfg-visit-date').value       = dbSettings.visitDate;
       // PIN không hiển thị ra DOM vì lý do bảo mật
 
+      renderSheetStatus();
       lucide.createIcons();
     }
 
@@ -581,6 +608,9 @@
         document.getElementById('screen-' + s).classList.add('hidden');
       });
       document.getElementById('screen-' + name).classList.remove('hidden');
+      if (name === 'admin' && currentAdminTab === 'settings') {
+        renderSheetStatus();
+      }
       lucide.createIcons();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -749,7 +779,7 @@
         var todayDate = dbSettings.visitDate;
 
         // Kiểm tra kỷ luật
-        var matched = dbPrisoners.filter(function(p) { return p.name === pName && p.dob === pDob; })[0];
+        var matched = dbPrisoners.filter(function(p) { return p.name === pName && isSameDate(p.dob, pDob); })[0];
         if (matched && matched.status === 'disciplined') {
           showNotification('Cảnh báo: Can phạm nhân đang bị kỷ luật dừng thăm gặp! Lý do: ' + (matched.reason || 'Không rõ'), 'error');
           showLoading('', false);
@@ -757,21 +787,21 @@
         }
 
         // Trùng CCCD
-        var dupCccd = dbVisits.filter(function(v) { return v.date === todayDate && v.status !== 'cancelled' && v.visitorCccd === vCccd; })[0];
+        var dupCccd = dbVisits.filter(function(v) { return isSameDate(v.date, todayDate) && v.status !== 'cancelled' && v.visitorCccd === vCccd; })[0];
         if (dupCccd) {
           showNotification('Số CCCD (' + vCccd + ') đã đăng ký thăm gặp trong ngày hôm nay!', 'error');
           showLoading('', false);
           return;
         }
         // Trùng SĐT
-        var dupPhone = dbVisits.filter(function(v) { return v.date === todayDate && v.status !== 'cancelled' && v.visitorPhone === vPhone; })[0];
+        var dupPhone = dbVisits.filter(function(v) { return isSameDate(v.date, todayDate) && v.status !== 'cancelled' && v.visitorPhone === vPhone; })[0];
         if (dupPhone) {
           showNotification('Số điện thoại (' + vPhone + ') đã đăng ký thăm gặp trong ngày hôm nay!', 'error');
           showLoading('', false);
           return;
         }
         // Trùng can phạm
-        var dupPrisoner = dbVisits.filter(function(v) { return v.date === todayDate && v.status !== 'cancelled' && v.prisonerName === pName; })[0];
+        var dupPrisoner = dbVisits.filter(function(v) { return isSameDate(v.date, todayDate) && v.status !== 'cancelled' && v.prisonerName === pName; })[0];
         if (dupPrisoner) {
           showNotification('Can phạm nhân (' + pName + ') đã có thân nhân đăng ký thăm gặp đợt này! Mỗi can phạm chỉ được 1 lượt/ngày.', 'error');
           showLoading('', false);
@@ -781,11 +811,18 @@
         // Tính STT
         var maxStt = 0;
         dbVisits.forEach(function(v) {
-          if (v.date === todayDate) {
+          if (isSameDate(v.date, todayDate)) {
             var n = parseInt(v.stt, 10);
             if (!isNaN(n) && n > maxStt) maxStt = n;
           }
         });
+
+        if (maxStt >= 999) {
+          showNotification('Đã hết lượt đăng ký, vui lòng liên hệ Trại Tạm giam số 1', 'error');
+          showLoading('', false);
+          return;
+        }
+
         var finalStt = String(maxStt + 1).padStart(3, '0');
 
         var newVisit = {
@@ -825,7 +862,12 @@
               return;
             }
             if (resultData.stt) {
-              newVisit.stt = String(resultData.stt).padStart(3, '0');
+              var serverStt = parseInt(resultData.stt, 10);
+              if (!isNaN(serverStt) && serverStt > maxStt) {
+                newVisit.stt = String(serverStt).padStart(3, '0');
+              } else {
+                newVisit.stt = finalStt;
+              }
               saveVisits();
             }
           } catch (netErr) {
@@ -1039,6 +1081,9 @@
           panel.classList.add('hidden');
         }
       });
+      if (name === 'settings') {
+        renderSheetStatus();
+      }
       lucide.createIcons();
     }
 
